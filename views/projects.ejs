@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/17cefd3b1f.js" crossorigin="anonymous"></script>
+    <link href="/scss/global.css" rel="stylesheet" type="text/css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container-fluid admin_dashboard">
+        <div class="nav_side">
+            <div class="nav_header_logo">
+                <img src="/imgs/quadrafort_logo.png" alt="quadrafort">
+            </div>
+            <div class="dashboard_nav_links">
+              <% if(profile == 'Admin' || profile == 'admin') { %>
+                <a href="#"><i class="fa fa-home"></i>&nbsp;Home</a>
+                <a href="/dashboard"><img src="/imgs/home.png" alt="home">Dashboard</a>
+                <a href="/projects" class="active_class"><img src="/imgs/project-management.png" alt="project">Project</a>
+                <a href="/customers"><img src="/imgs/costumer.png" alt="consumers">Customers</a>
+                <a href="/employees"><img src="/imgs/work-from-home.png" alt="teams">Team</a>
+              <% } %>
+              <% if(profile == 'Admin' || profile == 'admin' || profile == 'Employee' || profile == 'employee') { %>
+                  <a href="/tickets"><img src="/imgs/ticket.png" alt="consumers">Ticket</a>
+              <% } %>
+              <% if(profile == 'Admin' || profile == 'admin') { %>
+                <a href="/admin/logout"><img src="/imgs/power.png" alt="logout">Log out</a>
+              <% } else{ %>
+                <a href="/employee/logout">Log Out</a>
+              <% } %>
+            </div>
+        </div>
+        <div class="dashboard_view container-fluid">
+            <div class="dashborad_header">
+                <b>Projects</b>
+                <div class="notification_bar">
+                    <div class="user_profile">
+                        <img src="/imgs/user.png" alt="user">
+                        <p><%= username %></p>
+                    </div>
+                    <img src="/imgs/bell.png" class="bell_icon" alt="notification">
+                </div>
+            </div>
+            <div class="add_btn_container">
+                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add project</button>
+            </div>
+            <div class="table_view container-fluid" id="project_table">
+              <!-- <table>
+                <thead>
+                    <th>Name</th>
+                    <th>Status</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table> -->
+
+            </div>
+        </div>
+    </div>
+     <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Add costumer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="project" class="modal_to_add">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="form-floating">
+                      <input type="email" name="name" class="form-control" id="floatingInput" placeholder="Enter project name">
+                      <label for="floatingInput">Project name</label>
+                    </div>
+                    <div class="form-group">
+                      <label>Project Manager</label>
+                      <select name="manager" class="form-control" id="project-manager">
+                      </select>
+                    </div>
+                </div>
+            </div>
+              
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="handleForm('project');">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- modal 2 -->
+
+<!-- Modal -->
+<div class="modal fade" id="assign_modal" tabindex="-1" aria-labelledby="Assign_modal_label" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Assign_modal_label"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="employe_list_container">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updateEmpAssign()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal 3 -->
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <select class="form-select form-select-md" aria-label=".form-select-sm example" id="project_edit_status">
+          <option selected disabled value="">Select</option>
+          <option value="Open">Open</option>
+          <option value="Close">Close</option>
+          <option value="New">New</option>
+          <option value="Block">Block</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updateStatus();">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 4 -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteLabel">Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <b>Are you sure you want to delete this project ?</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onclick="deleteProject();">Delete Project</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script type="text/javascript">
+    const Base_url = "<%= url %>";
+    const token = "<%= usertoken %>";
+  </script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/projectController.js"></script>
+</body>
+</html>

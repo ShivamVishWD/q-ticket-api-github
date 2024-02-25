@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link href="/scss/global.css" rel="stylesheet" type="text/css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container-fluid login_container">
+       <div class="container">
+        <div class="admin_login_form">
+            <div class="admin_login_heading">
+                <img src="/imgs/quadrafort_q.png" alt="quadrafort">
+                <h2>Login</h2>
+            </div>
+            <form id="adminLogin">
+                <div class="form-group mb-3">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group mb-3">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="handleForm('adminLogin')">Login</button>
+              </form>
+              <div class="oauth">
+                <a href="/auth/signin">O-Auth</a>
+              </div>
+        </div>
+       </div>
+    </div>
+    <script type="text/javascript">
+      const Base_url = "<%= url %>";
+      const loginfor = "<%= loginfor %>"
+    </script>
+    <script src="/js/validation.js"></script>
+    <script src="/js/userController.js"></script>
+</body>
+</html>

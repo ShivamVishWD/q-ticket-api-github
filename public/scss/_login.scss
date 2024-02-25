@@ -1,0 +1,65 @@
+.login_container{
+    width: 100%;
+    position: relative;
+    height: 100vh;
+    background: linear-gradient(to right, #800080, #ffc0cb);
+
+   .admin_login_form{
+    padding: 30px;
+    width: 30%;
+    margin: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgba(255,255,255,0.1);
+    box-shadow: 0 0 80px rgba(0,0,0,0.15);
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(40px);
+
+    .admin_login_heading{
+        img{
+            height: 50px;
+            width: auto;
+            margin: auto;
+            display: block;
+            
+        }
+        h2{
+            text-align: center;
+            color: white;
+            letter-spacing: 1px;
+        }
+    }
+    input{
+        &:focus{
+            border-color: white;
+            box-shadow: none;
+        }
+    }
+    button{
+        width: 100%;
+        background-color:  #FF698D;
+        color: white;
+        outline: none;
+        border: none;
+        &:focus-visible{
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+        &:active{
+            background-color: #FF698D;
+        }
+
+    }
+    label{
+        color: rgba(255, 255, 255, 0.7);
+    }
+    #emailHelp{
+        color: rgba(255, 255, 255, 0.7) !important;
+
+    }
+   }
+}

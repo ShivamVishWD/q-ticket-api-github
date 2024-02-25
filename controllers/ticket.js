@@ -1,0 +1,144 @@
+const { HandleError } = require('../helper/ErrorHandler');
+const helper = require('../helper/Common');
+const ticketModel = require('../models/ticket');
+const projectModel = require('../models/project');
+
+const collectionFields = {
+    id: "_id",
+    ticket: "TicketNumber",
+    subject: 'Subject',
+    description: 'Description',
+    project: 'Project',
+    assign: 'AssignTo',
+    type: "TicketType",
+    priority: "TicketPriority",
+    estimate: 'EstimateDateTime',
+    actual: 'ActualDateTime',
+    status: 'Status',
+    createby: 'CreatedBy',
+    updateby: 'LastModifiedBy'
+}
+
+const ticketController = {
+
+    get: async(req, res) => {
+        try{
+            let filterObj = {}
+            if(req.query && Object.keys(req.query).length > 0){
+                for(let key in req.query)
+                    filterObj[collectionFields[key]]= req.query[key]
+            }
+            filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
+            
+            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo');
+            return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
+        }catch(error){
+            return HandleError(error)
+        }
+    },
+
+    insert: async(req, res) => {
+        try{
+            if(req.authData && req?.authData?.profile == 'employee')
+                return res.status(200).json({status:400, message: 'Permissio Denied'})
+
+            if(!req.body && Object.keys(req.body).length == 0)
+                return res.status(200).json({status: 400, message: 'Request Body should not be empty'});
+
+            let mandatoryFields = [];
+            if(!req.body.subject) mandatoryFields.push('subject');
+            if(!req.body.description) mandatoryFields.push('description');
+            if(!req.body.project) mandatoryFields.push('project');
+            
+            if(mandatoryFields.length > 0)
+                return res.status(200).json({status: 400, message: 'Mandatory Fields Error', fieds: mandatoryFields})
+
+            const getProject = await projectModel.findOne({_id: req.body.project, IsActive: true, IsDeleted: false});
+            if(getProject == null) return res.status(200).json({status: 400, message: 'Ticket not created because of Inactive project'});
+
+            let body = {};
+            for(let key in req.body){
+                body[collectionFields[key]] = req.body[key];
+            }
+            body[collectionFields['ticket']] = String(getProject?.Name).toUpperCase() + "-" + helper.randomNumber();
+
+            const result = await new ticketModel(body).save();
+            if(result?._id)
+                return res.status(200).json({status: 200, message: 'Record created', data: result})
+            else
+                return res.status(200).json({status: 400, message: 'Record creation failed'})
+        }catch(error){
+            return HandleError(error)
+        }
+    },
+
+    update: async(req, res) => {
+        try{
+            let filterObj = {};
+            let updateObj = {};
+
+            if(!req.query || Object.keys(req.query).length == 0)
+                return res.status(200).json({status: 400, message: 'Filter crieteria missing'});
+
+            if(!req.body || Object.keys(req.body).length == 0)
+                return res.status(200).json({status: 400, message: 'Update field is missing'});
+
+            for(let key in req.query)
+                filterObj[collectionFields[key]] = req.query[key]
+            
+            for(let key in req.body)
+                updateObj[collectionFields[key]] = req.body[key]
+
+            const result = await ticketModel.findOneAndUpdate(filterObj,updateObj,{new: true}).exec();
+            if(result?._id)
+                return res.status(200).json({status: 200, message: 'Record updated'});
+            else
+                return res.status(200).json({status: 400, message: 'Record updation failed'});
+        }catch(error){
+            return HandleError(error)
+        }
+    },
+
+    delete: async(req, res) => {
+        try{
+            if(req.authData && req?.authData?.profile == 'employee')
+                return res.status(200).json({status:400, message: 'Permissio Denied'})
+            
+            let filterObj = {};
+
+            if(!req.params || Object.keys(req.params).length == 0)
+                return res.status(200).json({status: 400, message: 'Filter crieteria missing'});
+
+            for(let key in req.query)
+                filterObj[collectionFields[key]] = req.query[key]
+
+            const result = await ticketModel.findOneAndUpdate(filterObj, {IsDeleted: true, IsActive: false}, {new: true}).exec();
+            if(result?._id)
+                return res.status(200).json({status: 200, message: 'Record deleted'});
+            else
+                return res.status(200).json({status: 400, message: 'Record deletion failed'});
+        }catch(error){
+            return HandleError(error)
+        }
+    },
+
+    updateLog: async(req, res) => {
+        try{
+            if(req?.authData && req?.authData?.profile == 'customer')
+                return res.status(200).json({status: 400, message: 'Permission Denied'});
+
+            if(!req.query || Object.keys(req.query).length == 0)
+                return res.status(200).json({status: 400, message: 'Filter crieteria missing'});
+
+            if(!req.body || Object.keys(req.body).length == 0)
+                return res.status(200).json({status: 400, message: 'Update field is missing from request body'});
+
+            
+        }catch(error){
+            return HandleError(error)
+        }
+    }
+
+}
+
+module.exports = ticketController;

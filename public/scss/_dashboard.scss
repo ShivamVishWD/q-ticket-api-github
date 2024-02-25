@@ -1,0 +1,255 @@
+.admin_dashboard{
+    width: 100%;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    .nav_side{
+        background-color: black;
+        width: 15%;
+        height: 100vh;
+        padding: 2% 1%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), 0 3px 6px rgba(0, 0, 0, 0.4);
+
+        .nav_header_logo{
+            img{
+                max-width: 100%;
+             }
+        }
+        // h2{
+
+        // }
+      
+
+        .dashboard_nav_links{
+            padding-top: 50px;
+            a{
+                display: block;
+                text-decoration: none;
+                color: rgba(255, 255, 255, 0.56);
+                padding: 10px 20px;
+                border-radius: 5px;
+                margin: 5px 0px;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+                // font-weight: 500;
+                img{
+                    height: 20px;
+                    filter: invert(1);
+                    margin-right: 8px;
+                    margin-top: -2px;
+                }
+
+            }
+            .active_class{
+                display: block;
+                text-decoration: none;
+                color: white;
+                background-color:#FF698D;
+                padding: 10px 20px;
+                border-radius: 5px;
+                margin: 15px 0px;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+                font-weight: 500;
+            }
+        }
+    }
+    .dashboard_view{
+        padding: 20px;
+        .dashborad_header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    
+            b{
+                width: 40%;
+            }
+            span{
+                width: 40%;
+            }
+            .notification_bar{
+                width: 20%;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+                padding: 10px;
+                border-radius: 5px;
+                img{
+                    height: 30px;
+                    width: auto;
+                }
+                .bell_icon{
+                    height: 20px;
+                }
+                .user_profile{
+                    display: flex;
+                    align-items: center;
+                    p{
+                        display: inline-block;
+                        margin-bottom: 0;
+                        margin-left: 5px;
+                        
+                    }
+                }
+            }
+           
+        }
+        .dashboard_stats{
+            padding: 30px 0px;
+            .dashboard_stats_cards{
+                padding: 20px;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+                margin:12px 7px;
+                border-radius: 5px;
+                h3{
+                    color: black;
+                    font-weight: 500;
+                    font-size: larger;
+                }
+                h4{
+                    color: rgb(177 171 171 / 70%);
+                    font-weight: 300;
+                    font-size: larger;
+                    width: 100%;
+                    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+                    padding-bottom: 10px;
+                }
+             
+                span{
+                    color: rgb(177 171 171 / 70%);
+                    display: block;
+                }
+                button{
+                    background-color: #FF698D;
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+                    border: none;
+                    display: block;
+                    margin: auto;
+
+                }
+            }
+
+        }
+        .add_btn_container{
+            position: relative;
+            width: 100%;
+            height: 80px;
+            padding: 10px 0px;
+            button{
+                position: absolute;
+                right: 20px;
+                background-color:  #FF698D;
+                color: white;
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                padding: 5px 25px;
+            }
+            .project-select{
+                position: absolute;
+                left: 20px;
+                width: 30%;
+            }
+            .existing-project{
+                position: absolute;
+                button{
+                    position: relative;
+                }
+                left: 20px;
+                display: flex;
+                justify-content: flex-start;
+            }
+        }
+        .table_view{
+            table{
+                width: 100%;
+                tr{
+                    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+                   td{
+                    padding: 5px;
+                   }
+                   th{
+                    padding: 5px;
+                   }
+                }
+            }
+        }
+    }
+}
+
+
+
+// modal form css
+
+.modal_to_add{
+    input{
+        height: auto;
+    }
+}
+
+#employe_list_container{
+    table{
+        width: 100%;
+        tr{
+            border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+
+            td{
+                padding: 5px;
+            }
+            th{
+                padding: 5px;
+            }
+        }
+    }
+}
+
+.form-group-emp-select {
+    display: block;
+    margin-bottom: 15px;
+  }
+  
+  .form-group-emp-select input {
+    padding: 0;
+    height: initial;
+    width: initial;
+    margin-bottom: 0;
+    display: none;
+    cursor: pointer;
+  }
+  
+  .form-group-emp-select label {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .form-group-emp-select label:before {
+    content:'';
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 2px solid #0079bf44;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .form-group-emp-select input:checked + label:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 9px;
+    width: 6px;
+    height: 14px;
+    border: solid #FF698D;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
