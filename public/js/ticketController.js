@@ -17,7 +17,7 @@ async function getProjectsForTickets(){
         if(response.status == 200){
             let templateString = '<option value="">Select a Project</option>';
             for(let item of response.data){
-                templateString += '<option value="'+item._id+'">'+item.Name+'</option>';
+                templateString += '<option value="'+item._id+'">'+item.Name +' - '+ item.Alias +'</option>';
             }
             document.querySelectorAll('#project-option').forEach(item => {
                 item.innerHTML = templateString;
@@ -45,7 +45,7 @@ async function getLoggedInUserDetail(){
             if(response.data.length > 0){
                 let template = '';
                 for(let item of response.data[0].Project){
-                    template += `<button value=${item._id} onClick=\'ticketOfProject(${JSON.stringify(item._id)})\'>${item.Name}</button>`
+                    template += `<button style="margin-left: 1rem;" value=${item._id} onClick=\'ticketOfProject(${JSON.stringify(item._id)})\'>${item.Name} - ${item.Alias}</button>`
 
                 }
                 document.getElementById('existingProject').innerHTML = template;

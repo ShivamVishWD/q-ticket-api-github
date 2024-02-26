@@ -42,7 +42,7 @@ async function getProjects() {
                     let td1 = document.createElement('td')
                     let td2 = document.createElement('td')
                     let td3 = document.createElement('td')
-                    td1.innerHTML = rec_data.data[i].Name
+                    td1.innerHTML = rec_data.data[i].Name + ' - ' + rec_data.data[i].Alias
                     tr1.appendChild(td1)
                     td2.innerText = rec_data.data[i].Status
                     tr1.appendChild(td2)

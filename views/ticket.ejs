@@ -8,6 +8,7 @@
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/jquery.min.js"></script>
   <link href="/scss/global.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
   <title>
     <%= pagetitle %>
   </title>
@@ -36,7 +37,7 @@
   <!-- Modal -->
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Create Ticket</h5>
@@ -52,34 +53,37 @@
             <div class="form-group mb-3">
               <textarea name="subject" rows="3" class="form-control" placeholder="Subject of Ticket"></textarea>
             </div>
-            <div class="form-group mb-3">
-              <textarea name="description" rows="5" class="form-control" placeholder="Description of Ticket"></textarea>
+            <div class="mb-3" id="ticket-description">
+
+              <!-- <textarea name="description" rows="5" class="form-control" placeholder="Description of Ticket"></textarea> -->
             </div>
-            <div class="form-group mb-3">
-              <select name="type" class="form-control">
-                <option value="">--Select Ticket Type--</option>
-                <option value="Feature Request">Feature Request</option>
-                <option value="Task">Task</option>
-                <option value="Bug">Bug</option>
-                <option value="Story">Story</option>
-              </select>
-            </div>
-            <div class="form-group mb-3">
-              <select name="priority" class="form-control">
-                <option value="">--Select Ticket Priotity--</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
-            <div class="form-group mb-3">
-              <select name="status" class="form-control">
-                <option value="">--Select Ticket Status--</option>
-                <option value="New">New</option>
-                <option value="Open">Open</option>
-                <option value="Ready To Dev">Ready To Dev</option>
-                <option value="Assign To Dev">Assign To Dev</option>
-              </select>
+            <div class="row">
+              <div class="form-group col-4 mb-3">
+                <select name="type" class="form-control">
+                  <option value="">--Select Ticket Type--</option>
+                  <option value="Feature Request">Feature Request</option>
+                  <option value="Task">Task</option>
+                  <option value="Bug">Bug</option>
+                  <option value="Story">Story</option>
+                </select>
+              </div>
+              <div class="form-group col-4 mb-3">
+                <select name="priority" class="form-control">
+                  <option value="">--Select Ticket Priotity--</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div class="form-group col-4 mb-3">
+                <select name="status" class="form-control">
+                  <option value="">--Select Ticket Status--</option>
+                  <option value="New">New</option>
+                  <option value="Open">Open</option>
+                  <option value="Ready To Dev">Ready To Dev</option>
+                  <option value="Assign To Dev">Assign To Dev</option>
+                </select>
+              </div>
             </div>
           </form>
         </div>
@@ -94,11 +98,17 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
   <script type="text/javascript">
     const Base_url = "<%= url %>";
     const token = "<%= usertoken %>";
     const userid = "<%= userid %>";
     const profile = "<%= profile %>";
+    var editor = new FroalaEditor('#ticket-description', {
+      heightMin: 200,
+      //flieUpload: false
+      //toolbarButtons: ['insertFiles']
+    });
   </script>
   <script src="/js/validation.js"></script>
   <script src="/js/ticketController.js"></script>
