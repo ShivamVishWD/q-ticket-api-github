@@ -23,7 +23,6 @@ const collectionFields = {
 const ticketController = {
 
     get: async(req, res) => {
-        console.log(req.authData)
         try{
             let filterObj = {}
             if(req.query && Object.keys(req.query).length > 0){
