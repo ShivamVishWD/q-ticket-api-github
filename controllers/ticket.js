@@ -23,6 +23,7 @@ const collectionFields = {
 const ticketController = {
 
     get: async(req, res) => {
+        console.log(req.authData)
         try{
             let filterObj = {}
             if(req.query && Object.keys(req.query).length > 0){
@@ -40,6 +41,7 @@ const ticketController = {
             const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate({path: 'CreatedBy', model: 'admin'}).populate({path: 'LastModifiedBy', model: 'admin'});
             return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
         }catch(error){
+            console.log('error : ',error)
             return HandleError(error)
         }
     },

@@ -7,7 +7,7 @@ const token = {
     generateToken: async(data) => {
         try{
             const token = jwt.sign(
-                data, process.env.JWT_TOKEN, { expiresIn: "2h" }
+                data, process.env.JWT_TOKEN, { expiresIn: "1d" }
             )
             return { status: 200, message: 'Token Genrated', token };
         }catch(error){
@@ -24,8 +24,17 @@ const token = {
             if(!token)
                 return res.json({ status: 403, message: "A Token is required for authentication" });
             else if(regex.test(token)){
-                const decode = jwt.verify(token, process.env.JWT_TOKEN);
-                req.authData = decode;
+                jwt.verify(token, process.env.JWT_TOKEN, (err, decoded) => {
+                    if (err) {
+                        if (err.name === 'TokenExpiredError') {
+                            return res.status(401).json({ status: 401, message: 'Token expired' });
+                        } else {
+                            return res.status(403).json({ status: 403, message: 'Failed to authenticate token' });
+                        }
+                    } else {
+                        req.authData = decoded;
+                    }
+                });
             }else{
                 return res.json({ status: 403, message: 'You passed wrong format of token' });
             }

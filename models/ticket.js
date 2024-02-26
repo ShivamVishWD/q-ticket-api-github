@@ -83,13 +83,13 @@ const schema = new Schema({
     CreatedBy: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        references: { type: [Schema.Types.ObjectId], refPath: 'model_type' },
+        references: { type: [mongoose.Schema.Types.ObjectId], refPath: 'model_type' },
         model_type: {  type: String, enum: ['customer', 'admin'], required: false }
     },
     LastModifiedBy: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        references: { type: [Schema.Types.ObjectId], refPath: 'model_type' },
+        references: { type: [mongoose.Schema.Types.ObjectId], refPath: 'model_type' },
         model_type: {  type: String, enum: ['customer', 'admin', 'employee'], required: false }
     },
     IsActive: {
