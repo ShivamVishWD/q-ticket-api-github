@@ -1,0 +1,39 @@
+<div class="nav_side">
+    <div class="nav_header_logo">
+        <img src="/imgs/quadrafort_logo.png" alt="quadrafort">
+    </div>
+    <div class="dashboard_nav_links">
+      <% if(profile == 'Admin' || profile == 'admin') { %>
+        <% if(pagename == 'dashboard') { %>
+            <a href="/dashboard" class="active_class"><img src="/imgs/home.png" alt="home">Dashboard</a>
+        <% } else { %>
+            <a href="/dashboard"><img src="/imgs/home.png" alt="home">Dashboard</a>
+        <% } %>
+        <% if(pagename == 'projects') { %>
+            <a href="/projects" class="active_class"><img src="/imgs/project-management.png" alt="project">Project</a>
+        <% } else { %>
+            <a href="/projects"><img src="/imgs/project-management.png" alt="project">Project</a>
+        <% } %>
+        <% if(pagename == 'customers') { %>
+            <a href="/customers" class="active_class"><img src="/imgs/costumer.png" alt="customers">Customers</a>
+        <% } else { %>
+            <a href="/customers"><img src="/imgs/costumer.png" alt="customers">Customers</a>
+        <% } %>
+        <% if(pagename == 'employees') { %>
+            <a href="/employees" class="active_class"><img src="/imgs/work-from-home.png" alt="teams">Team</a>
+        <% } else { %>
+            <a href="/employees"><img src="/imgs/work-from-home.png" alt="teams">Team</a>
+        <% } %>
+      <% } %>
+      <% if(pagename == 'tickets') { %>
+        <a href="/tickets" class="active_class"><img src="/imgs/ticket.png" alt="tickets">Ticket</a>
+      <% } else { %>
+        <a href="/tickets"><img src="/imgs/ticket.png" alt="tickets">Ticket</a>
+      <% } %>
+      <% if(profile == 'Admin' || profile == 'admin') { %>
+        <a href="/admin/logout"><img src="/imgs/power.png" alt="logout">Log out</a>
+      <% } else{ %>
+        <a href="/employee/logout">Log Out</a>
+      <% } %>
+    </div>
+</div>

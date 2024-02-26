@@ -45,6 +45,7 @@ const schema = new Schema({
     Role: {
         type: String,
         required: false,
+        enum: ['Team Member', 'Manager'],
         default: null
     },
     Permission: {

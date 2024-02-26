@@ -6,6 +6,7 @@ const adminModel = require('../models/admin');
 const collectionFields = {
     id: "_id",
     name: 'Name',
+    alias: 'Alias',
     customer: 'Customer',
     manager: 'Manager',
     members: 'TeamMember',
@@ -20,10 +21,19 @@ const projectController = {
 
     get: async(req, res) => {
         try{
-            let filterObj = {
-                IsActive: true,
-                IsDeleted: false
+            let filterObj = {}
+            if(req.query && Object.keys(req.query).length > 0){
+                for(let key in req.query)
+                    filterObj[collectionFields[key]]= req.query[key]
             }
+
+            if('count' in req.query){
+                const count = await projectModel.find({ IsActive: true, IsDeleted: false }).countDocuments();
+                return res.status(200).json({status: 200, message: 'Total Customer', count})
+            }
+
+            filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
+
             const result = await projectModel.find(filterObj).populate('Customer').populate('Manager').populate('TeamMember').populate('CreatedBy').populate('LastModifiedBy');
             return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
         }catch(error){
@@ -41,6 +51,7 @@ const projectController = {
 
             let mandatoryFields = [];
             if(!req.body.name) mandatoryFields.push('name');
+            if(!req.body.alias) mandatoryFields.push('alias');
             
             if(mandatoryFields.length > 0)
                 return res.status(200).json({status: 400, message: 'Mandatory Fields Error', fieds: mandatoryFields})
@@ -89,6 +100,9 @@ const projectController = {
             
             updateObj[collectionFields['updateby']] = req?.authData?._id;
             const result = await projectModel.findOneAndUpdate(filterObj,{$set:updateObj},{new: true}).exec();
+            if(req.body.manager){
+                await employeeModel.findOneAndUpdate({_id: req.body.manager}, {$push: {Project: result?._id}}, {new: true}).exec();
+            }
             if(result?._id)
                 return res.status(200).json({status: 200, message: 'Record updated'});
             else

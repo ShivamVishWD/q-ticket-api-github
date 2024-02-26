@@ -7,45 +7,16 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery.min.js"></script>
     <link href="/scss/global.css" rel="stylesheet" type="text/css">
-    <title>Login</title>
+    <title><%= pagetitle %></title>
 </head>
 <body>
     <div class="container-fluid admin_dashboard">
-        <div class="nav_side">
-            <div class="nav_header_logo">
-                <img src="/imgs/quadrafort_logo.png" alt="quadrafort">
-            </div>
-            <div class="dashboard_nav_links">
-              <% if(profile == 'Admin' || profile == 'admin') { %>
-                <a href="#"><i class="fa fa-home"></i>&nbsp;Home</a>
-                <a href="/dashboard"><img src="/imgs/home.png" alt="home">Dashboard</a>
-                <a href="/projects"><img src="/imgs/project-management.png" alt="project">Project</a>
-                <a href="/customers"  class="active_class"><img src="/imgs/costumer.png" alt="consumers">Customers</a>
-                <a href="/employees"><img src="/imgs/work-from-home.png" alt="teams">Team</a>
-              <% } %>
-              <% if(profile == 'Admin' || profile == 'admin' || profile == 'Employee' || profile == 'employee') { %>
-                <a href="/tickets"><img src="/imgs/ticket.png" alt="consumers">Ticket</a>
-              <% } %>
-              <% if(profile == 'Admin' || profile == 'admin') { %>
-                <a href="/admin/logout"><img src="/imgs/power.png" alt="logout">Log out</a>
-              <% } else{ %>
-                <a href="/employee/logout">Log Out</a>
-              <% } %>
-            </div>
-        </div>
+        <%- include('partials/sidebar.ejs') %>
+            
         <div class="dashboard_view container-fluid">
-            <div class="dashborad_header">
-                <b>Customers</b>
-                <div class="notification_bar">
-                    <div class="user_profile">
-                        <img src="/imgs/user.png" alt="user">
-                    <p><%= username %></p>
-                    </div>
-                    <img src="/imgs/bell.png" class="bell_icon" alt="notification">
-                </div>
-            </div>
+            <%- include('partials/topbar.ejs') %>
             <div class="add_btn_container">
-                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add customer</button>
+                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Customer</button>
             </div>
             <div class="table_view container-fluid" id="costumer_table">
            
@@ -60,27 +31,23 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Add customer</h5>
+          <h5 class="modal-title" id="staticBackdropLabel">Add Customer</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form id="customer" class="modal_to_add">
             <div class="row mb-3">
-                <div class="col-6">
+                <div class="col-12">
                     <div class="form-floating">
                         <input type="email" name="name" class="form-control" id="floatingInput" placeholder="Enter name">
                         <label for="floatingInput">Name</label>
                       </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label>Project name</label>
-                        <select name="project" class="form-control" id="project-option">
-                        </select>
-                      </div>
-                </div>
             </div>
-            
+            <div class="form-group mb-3">
+              <select name="project" class="form-control" id="project-option">
+              </select>
+            </div>
             <div class="form-floating mb-3">
                 <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                 <label for="floatingInput">Email address</label>

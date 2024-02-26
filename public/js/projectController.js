@@ -20,6 +20,7 @@ async function getProjects() {
         if (rec_data) {
             console.log(response.data.length)
             let tableContainer = document.getElementById('project_table')
+            tableContainer.innerHTML = '';
             let table = document.createElement('table');
             tableContainer.appendChild(table);
             let tr = document.createElement('tr');
@@ -66,7 +67,7 @@ async function getProjects() {
 
 async function getManagers() {
     try {
-        const apiUrl = url + 'api/admin/get';
+        const apiUrl = url + 'api/employee/get?role="Manager"';
         console.log('api url : ', apiUrl)
         let response = await fetch(apiUrl, {
             method: 'GET',
@@ -78,7 +79,7 @@ async function getManagers() {
         response = await response.json();
         console.log('response : ', response)
         if (response.status == 200) {
-            let templateString = '<option value="">Select a Manager</option>';
+            let templateString = '<option value="">Reporting Manager</option>';
             for (let item of response.data) {
                 templateString += '<option value="' + item._id + '">' + item.Name + '</option>';
             }
@@ -236,7 +237,8 @@ let assign_selected_empl = {
     members:[]
 };
 let edit_project_obj = {
-    "status": ""
+    "status": "",
+    // manager: null
 }
 let delete_project_obj = {
     'ProjectName': "",
@@ -306,13 +308,14 @@ async function updateEmpAssign() {
     }
 
 }
-async function updateStatus() {
+async function updateProject() {
 
     let selectedValue = document.getElementById('project_edit_status').value;
-    console.log(selectedValue, 'selectedValue');
+    let managerValue = document.getElementById('project-manager').value;
 
-    if (!selectedValue == "") {
+    if (selectedValue != "") {
         edit_project_obj.status = selectedValue;
+        // edit_project_obj.manager = managerValue;
         console.log(Project_ID,edit_project_obj,'check d=edit')
 
           try{
@@ -337,7 +340,7 @@ async function updateStatus() {
 
     }
     else {
-        alert("please select")
+        alert("please select at least one");
     }
 
 }

@@ -84,12 +84,17 @@
   border-radius: 5px;
   margin: 5px 0px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: 0.3s ease;
 }
 .admin_dashboard .nav_side .dashboard_nav_links a img {
   height: 20px;
   filter: invert(1);
   margin-right: 8px;
   margin-top: -2px;
+}
+.admin_dashboard .nav_side .dashboard_nav_links a:hover {
+  background-color: #FF698D;
+  color: #fff;
 }
 .admin_dashboard .nav_side .dashboard_nav_links .active_class {
   display: block;

@@ -8,7 +8,6 @@ const collectionFields = {
     name: 'Name',
     email: 'Email',
     password: 'Password',
-    project: "projectId",
     active: "IsActive",
     delete: "IsDeleted",
     permission: "Permission",
@@ -23,7 +22,7 @@ const adminController = {
                 IsActive: true,
                 IsDeleted: false
             };
-            const result = await adminModel.find(filterObj).populate('Project').select("-Password");
+            const result = await adminModel.find(filterObj);
             return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
         }catch(error){
             return HandleError(error);
@@ -32,7 +31,6 @@ const adminController = {
 
     insert: async(req, res) => {
         try{
-
             if(!req.body && Object.keys(req.body).length == 0)
                 return res.status(200).json({status: 400, message: 'Request Body should not be empty'});
 

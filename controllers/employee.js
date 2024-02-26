@@ -28,7 +28,14 @@ const employeeController = {
                 for(let key in req.query)
                     filterObj[collectionFields[key]]= req.query[key]
             }
+
+            if('count' in req.query){
+                const count = await employeeModel.find({ IsActive: true, IsDeleted: false }).countDocuments();
+                return res.status(200).json({status: 200, message: 'Total Customer', count})
+            }
+
             filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
+            
             const result = await employeeModel.find(filterObj).populate('Project').populate('CreatedBy').populate('LastModifiedBy').select('-Password');
             return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
         }catch(error){
@@ -63,8 +70,12 @@ const employeeController = {
             body[collectionFields['createby']] = req?.authData?._id;
             body[collectionFields['updateby']] = req?.authData?._id;
             const result = await new employeeModel(body).save();
-            if(req.body.project)
-                await projectModel.updateMany({_id: {$in: req.body.project}}, {$push: {TeamMember: result?._id}}, {new: true}).exec();
+            if(req.body.project){
+                if(req.body.role == 'Team Member')
+                    await projectModel.updateMany({_id: {$in: req.body.project}}, {$push: {TeamMember: result?._id}}, {new: true}).exec();
+                else if(req.body.role == 'Manager')
+                    await projectModel.findOneAndUpdate({_id: req.body.project}, {Manager: result?._id}, {new: true}).exec();
+            }
             if(result?._id)
                 return res.status(200).json({status: 200, message: 'Record created', data: result})
             else
@@ -97,11 +108,11 @@ const employeeController = {
             if (result != null) {
                 let valid = bcrypt.compareSync(req.body.password, result?.Password);
                 if (valid){
-                    const responseObj = {_id : result?._id, name: result?.Name, email: result?.Email, profile: 'employee'};
+                    const responseObj = {_id : result?._id, name: result?.Name, email: result?.Email, profile: result?.Role == 'Team Member' ? 'employee' : 'manager'};
                     let jwtToken = await token.generateToken(responseObj);
                     req.session.userotken = jwtToken?.token;
                     req.session.userid = result?._id;
-                    req.session.profile = 'employee';
+                    req.session.profile = result?.Role == 'Team Member' ? 'employee' : 'manager';
                     req.session.username = result?.Name;
                     return res
                     .status(200)

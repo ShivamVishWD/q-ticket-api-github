@@ -19,7 +19,9 @@ async function getProjectsForTickets(){
             for(let item of response.data){
                 templateString += '<option value="'+item._id+'">'+item.Name+'</option>';
             }
-            document.getElementById('project-option').innerHTML = templateString;
+            document.querySelectorAll('#project-option').forEach(item => {
+                item.innerHTML = templateString;
+            })
         }
     }catch(error){
         console.log('error : ',error)
@@ -153,5 +155,28 @@ function getTypeBadge(badgeCode) {
     }
     else if (badgeCode == 'Feature Request'){
         return `<span class="badge text-bg-info" title="Feature Request">Feature Request</span>`;
+    }
+}
+
+async function createTicket(formData){
+    try{
+        console.log('formData : ',formData)
+        const apiUrl = url + 'api/ticket/insert';
+        let response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+token
+            },
+            body: JSON.stringify(formData)
+        })
+        response = await response.json();
+        console.log('response : ',response)
+        if(response.status == 200){
+            alert('Ticket Created');
+            window.location.reload();
+        }
+    }catch(error){
+        console.log('error : ',error)
     }
 }

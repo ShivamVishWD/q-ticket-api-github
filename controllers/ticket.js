@@ -12,6 +12,7 @@ const collectionFields = {
     assign: 'AssignTo',
     type: "TicketType",
     priority: "TicketPriority",
+    logs: "Logs",
     estimate: 'EstimateDateTime',
     actual: 'ActualDateTime',
     status: 'Status',
@@ -28,9 +29,15 @@ const ticketController = {
                 for(let key in req.query)
                     filterObj[collectionFields[key]]= req.query[key]
             }
+
+            if('count' in req.query){
+                const count = await ticketModel.find({ IsActive: true, IsDeleted: false }).countDocuments();
+                return res.status(200).json({status: 200, message: 'Total Customer', count})
+            }
+
             filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
             
-            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo');
+            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate({path: 'CreatedBy', model: 'admin'}).populate({path: 'LastModifiedBy', model: 'admin'});
             return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
         }catch(error){
             return HandleError(error)
@@ -39,6 +46,7 @@ const ticketController = {
 
     insert: async(req, res) => {
         try{
+            console.log(req.body)
             if(req.authData && req?.authData?.profile == 'employee')
                 return res.status(200).json({status:400, message: 'Permissio Denied'})
 
@@ -53,14 +61,18 @@ const ticketController = {
             if(mandatoryFields.length > 0)
                 return res.status(200).json({status: 400, message: 'Mandatory Fields Error', fieds: mandatoryFields})
 
-            const getProject = await projectModel.findOne({_id: req.body.project, IsActive: true, IsDeleted: false});
+            const getProject = await projectModel.findOne({_id: req.body.project, IsActive: true, IsDeleted: false}).select('Name Alias');
             if(getProject == null) return res.status(200).json({status: 400, message: 'Ticket not created because of Inactive project'});
+
+            const getCountOfTickets = await ticketModel.find({Project: req.body.project}).countDocuments();
 
             let body = {};
             for(let key in req.body){
                 body[collectionFields[key]] = req.body[key];
             }
-            body[collectionFields['ticket']] = String(getProject?.Name).toUpperCase() + "-" + helper.randomNumber();
+            body[collectionFields['ticket']] = String(getProject?.Alias != null ? getProject?.Alias : getProject?.Name).toUpperCase() + "-" + String((getCountOfTickets+1)).padStart(4, '0');
+            body[collectionFields['createby']] = req?.authData?._id;
+            body[collectionFields['updateby']] = req?.authData?._id;
 
             const result = await new ticketModel(body).save();
             if(result?._id)
@@ -124,6 +136,9 @@ const ticketController = {
 
     updateLog: async(req, res) => {
         try{
+            let filterObj = {};
+            let updateObj = {};
+
             if(req?.authData && req?.authData?.profile == 'customer')
                 return res.status(200).json({status: 400, message: 'Permission Denied'});
 
@@ -133,7 +148,11 @@ const ticketController = {
             if(!req.body || Object.keys(req.body).length == 0)
                 return res.status(200).json({status: 400, message: 'Update field is missing from request body'});
 
+            for(let key in req.query)
+                filterObj[collectionFields[key]] = req.query[key]
             
+            for(let key in req.body)
+                updateObj[collectionFields[key]] = req.body[key]
         }catch(error){
             return HandleError(error)
         }

@@ -1,67 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery.min.js"></script>
-    <link href="/scss/global.css" rel="stylesheet" type="text/css">
-    <title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <link href="/scss/global.css" rel="stylesheet" type="text/css" />
+  <title>
+    <%= pagetitle %>
+  </title>
 </head>
+
 <body>
-    <div class="container-fluid admin_dashboard">
-        <div class="nav_side">
-            <div class="nav_header_logo">
-                <img src="/imgs/quadrafort_logo.png" alt="quadrafort">
-            </div>
-            <div class="dashboard_nav_links">
-              <% if(profile == 'Admin' || profile == 'admin') { %>
-                <a href="#"><i class="fa fa-home"></i>&nbsp;Home</a>
-                <a href="/dashboard"><img src="/imgs/home.png" alt="home">Dashboard</a>
-                <a href="/projects"><img src="/imgs/project-management.png" alt="project">Project</a>
-                <a href="/customers"><img src="/imgs/costumer.png" alt="consumers">Customers</a>
-                <a href="/employees"><img src="/imgs/work-from-home.png" alt="teams">Team</a>
+  <div class="container-fluid admin_dashboard">
+    <%- include('partials/sidebar.ejs') %>
+      <div class="dashboard_view container-fluid">
+        <%- include('partials/topbar.ejs') %>
+          <div class="add_btn_container">
+            <% if(profile !='employee' && profile !='Employee' ) { %>
+              <select name="project" class="form-control project-select" id="project-option"
+                onchange="ticketOfProject()"></select>
+              <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Create Ticket
+              </button>
               <% } %>
-              <% if(profile == 'Admin' || profile == 'admin' || profile == 'Employee' || profile == 'employee') { %>
-                  <a href="/tickets" class="active_class"><img src="/imgs/ticket.png" alt="consumers">Ticket</a>
-              <% } %>
-              <% if(profile == 'Admin' || profile == 'admin') { %>
-                <a href="/admin/logout"><img src="/imgs/power.png" alt="logout">Log out</a>
-              <% } else{ %>
-                <a href="/employee/logout">Log Out</a>
-              <% } %>
-            </div>
-        </div>
-        <div class="dashboard_view container-fluid">
-            <div class="dashborad_header">
-                <b>Tickets</b>
-                <div class="notification_bar">
-                    <div class="user_profile">
-                        <img src="/imgs/user.png" alt="user">
-                        <p><%= username %></p>
-                    </div>
-                    <img src="/imgs/bell.png" class="bell_icon" alt="notification">
-                </div>
-            </div>
-            <div class="add_btn_container">
-                <% if(profile == 'admin' || profile == 'Admin') { %>
-                  <select name="project" class="form-control project-select" id="project-option" onchange="ticketOfProject()">
-                  </select>
-                  <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create Ticket</button>
-                <% } %>
-                <% if(profile == 'employee' || profile == 'Employee') { %>
-                  <div id="existingProject" class="existing-project">
-                    
-                  </div>
-                <% } %>
-            </div>
-            <div class="table_view container-fluid" id="ticket_table">
-            </div>
-        </div>
-    </div>
-     <!-- Modal -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <% if(profile=='employee' || profile=='Employee' ) { %>
+                  <div id="existingProject" class="existing-project"></div>
+                  <% } %>
+          </div>
+          <div class="table_view container-fluid" id="ticket_table"></div>
+      </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -69,30 +43,53 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="employee" class="modal_to_add">
-            <div class="row mb-3">
-                <div class="col-12">
-                    <div class="form-floating">
-                        <input type="email" name="name" class="form-control" id="floatingInput" placeholder="Enter name">
-                        <label for="floatingInput">Name</label>
-                      </div>
-                </div>
+          <form id="ticket" class="modal_to_add">
+            <div class="form-group mb-3">
+              <select name="project" class="form-control project-select" id="project-option">
+                <option value="">select project</option>
+              </select>
             </div>
-            
-            <div class="form-floating mb-3">
-                <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Password</label>
-              </div>
-              
+            <div class="form-group mb-3">
+              <textarea name="subject" rows="3" class="form-control" placeholder="Subject of Ticket"></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <textarea name="description" rows="5" class="form-control" placeholder="Description of Ticket"></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <select name="type" class="form-control">
+                <option value="">--Select Ticket Type--</option>
+                <option value="Feature Request">Feature Request</option>
+                <option value="Task">Task</option>
+                <option value="Bug">Bug</option>
+                <option value="Story">Story</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <select name="priority" class="form-control">
+                <option value="">--Select Ticket Priotity--</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <select name="status" class="form-control">
+                <option value="">--Select Ticket Status--</option>
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="Ready To Dev">Ready To Dev</option>
+                <option value="Assign To Dev">Assign To Dev</option>
+              </select>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="handleForm('employee');">Add</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" onclick="handleForm('ticket');">
+            Create Ticket
+          </button>
         </div>
       </div>
     </div>
@@ -106,4 +103,5 @@
   <script src="/js/validation.js"></script>
   <script src="/js/ticketController.js"></script>
 </body>
+
 </html>

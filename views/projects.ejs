@@ -8,45 +8,15 @@
     <script src="/js/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/17cefd3b1f.js" crossorigin="anonymous"></script>
     <link href="/scss/global.css" rel="stylesheet" type="text/css">
-    <title>Login</title>
+    <title><%= pagetitle %></title>
 </head>
 <body>
     <div class="container-fluid admin_dashboard">
-        <div class="nav_side">
-            <div class="nav_header_logo">
-                <img src="/imgs/quadrafort_logo.png" alt="quadrafort">
-            </div>
-            <div class="dashboard_nav_links">
-              <% if(profile == 'Admin' || profile == 'admin') { %>
-                <a href="#"><i class="fa fa-home"></i>&nbsp;Home</a>
-                <a href="/dashboard"><img src="/imgs/home.png" alt="home">Dashboard</a>
-                <a href="/projects" class="active_class"><img src="/imgs/project-management.png" alt="project">Project</a>
-                <a href="/customers"><img src="/imgs/costumer.png" alt="consumers">Customers</a>
-                <a href="/employees"><img src="/imgs/work-from-home.png" alt="teams">Team</a>
-              <% } %>
-              <% if(profile == 'Admin' || profile == 'admin' || profile == 'Employee' || profile == 'employee') { %>
-                  <a href="/tickets"><img src="/imgs/ticket.png" alt="consumers">Ticket</a>
-              <% } %>
-              <% if(profile == 'Admin' || profile == 'admin') { %>
-                <a href="/admin/logout"><img src="/imgs/power.png" alt="logout">Log out</a>
-              <% } else{ %>
-                <a href="/employee/logout">Log Out</a>
-              <% } %>
-            </div>
-        </div>
+        <%- include('partials/sidebar.ejs') %>
         <div class="dashboard_view container-fluid">
-            <div class="dashborad_header">
-                <b>Projects</b>
-                <div class="notification_bar">
-                    <div class="user_profile">
-                        <img src="/imgs/user.png" alt="user">
-                        <p><%= username %></p>
-                    </div>
-                    <img src="/imgs/bell.png" class="bell_icon" alt="notification">
-                </div>
-            </div>
+            <%- include('partials/topbar.ejs') %>
             <div class="add_btn_container">
-                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add project</button>
+                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Project</button>
             </div>
             <div class="table_view container-fluid" id="project_table">
               <!-- <table>
@@ -74,14 +44,13 @@
           <form id="project" class="modal_to_add">
             <div class="row mb-3">
                 <div class="col-12">
-                    <div class="form-floating">
+                    <div class="form-floating mb-3">
                       <input type="email" name="name" class="form-control" id="floatingInput" placeholder="Enter project name">
-                      <label for="floatingInput">Project name</label>
+                      <label for="floatingInput">Project Name</label>
                     </div>
-                    <div class="form-group">
-                      <label>Project Manager</label>
-                      <select name="manager" class="form-control" id="project-manager">
-                      </select>
+                    <div class="form-floating">
+                      <input type="email" name="alias" class="form-control" id="floatingInput" placeholder="For example Ambition Fighter - AF" maxlength="4" max="4">
+                      <label for="floatingInput">Project Alias</label>
                     </div>
                 </div>
             </div>
@@ -135,16 +104,20 @@
       </div>
       <div class="modal-body">
         <select class="form-select form-select-md" aria-label=".form-select-sm example" id="project_edit_status">
-          <option selected disabled value="">Select</option>
+          <option selected disabled value="">Select Status</option>
           <option value="Open">Open</option>
           <option value="Close">Close</option>
           <option value="New">New</option>
           <option value="Block">Block</option>
         </select>
+        <!-- <div class="form-group mt-3">
+          <select name="manager" class="form-control" id="project-manager">
+          </select>
+        </div> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="updateStatus();">Save changes</button>
+        <button type="button" class="btn btn-primary" onclick="updateProject();">Save changes</button>
       </div>
     </div>
   </div>

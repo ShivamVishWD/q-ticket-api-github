@@ -27,11 +27,6 @@ const schema = new Schema({
         required: false,
         default: false
     },
-    Project: [{
-        type: mongoose.Schema.Types.ObjectId,
-        required: false,
-        ref: 'project',
-    }],
     Permission: {
         type: Array,
         required: false,

@@ -96,7 +96,7 @@ async function addemployee(formData){
         response = await response.json();
         console.log('response : ',response)
         if(response.status == 200){
-            alert('Employee Added');
+            alert('Team Added');
             window.location.reload();
         }
     }catch(error){

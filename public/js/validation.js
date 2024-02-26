@@ -29,5 +29,8 @@ function handleForm(formName){
         }
         addemployee(formObj)
     }
+    if(formName == 'ticket'){
+        createTicket(formObj)
+    }
 }
 

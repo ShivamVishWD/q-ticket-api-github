@@ -8,20 +8,28 @@ const schema = new Schema({
         type: String,
         required: true
     },
+    Alias: {
+        type: String,
+        required: false,
+        default: null
+    },
     Customer: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
-        ref: 'customer'
+        ref: 'customer',
+        default: null
     },
     Manager: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
-        ref: 'admin'
+        ref: 'employee',
+        default: null
     },
     TeamMember: [{
         type: mongoose.Schema.Types.ObjectId,
         required: false,
-        ref: 'employee'
+        ref: 'employee',
+        default: []
     }],
     Status: {
         type: String,

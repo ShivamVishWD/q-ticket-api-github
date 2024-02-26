@@ -21,10 +21,19 @@ const collectionFields = {
 const customerController = {
   get: async (req, res) => {
     try {
-      let filterObj = {
-        IsActive: true,
-        IsDeleted: false
-      };
+      let filterObj = {}
+      if(req.query && Object.keys(req.query).length > 0){
+          for(let key in req.query)
+              filterObj[collectionFields[key]]= req.query[key]
+      }
+
+      if('count' in req.query){
+        const count = await customerModel.find({ IsActive: true, IsDeleted: false }).countDocuments();
+        return res.status(200).json({status: 200, message: 'Total Customer', count})
+      }
+
+      filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
+
       const result = await customerModel.find(filterObj).populate('Project').populate('CreatedBy').populate('LastModifiedBy').select('-Password');
       return res
         .status(200)
