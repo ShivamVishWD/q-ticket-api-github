@@ -3,7 +3,7 @@ let allProjects = [];
 
 async function getEmployees(projectId){
     try{
-        let fetchUrl = profile == 'manager' ? projectId ? 'api/employee/get?role=Team Member&project='+projectId : 'api/employee/get?role=Team Member' : 'api/employee/get'
+        let fetchUrl = profile == 'manager' ? 'api/employee/get?role=Team Member&project='+projectId : 'api/employee/get'
         const apiUrl = url + fetchUrl;
         console.log('api url : ',apiUrl)
         let response = await fetch(apiUrl, {

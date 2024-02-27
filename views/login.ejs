@@ -7,6 +7,7 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery.min.js"></script>
     <link href="/scss/global.css" rel="stylesheet" type="text/css">
+    <script src="https://kit.fontawesome.com/17cefd3b1f.js" crossorigin="anonymous"></script>
     <title><%= pagetitle %></title>
 </head>
 <body>
@@ -20,16 +21,29 @@
             <form id="adminLogin">
                 <div class="form-group mb-3">
                   <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                  <% if(loginfor == 'admin' || loginfor == 'Admin') { %>
+                    <input type="email" class="form-control" name="email" value="admin@quadrafort.com" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                  <% } else { %>
+                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                  <% } %>
                 </div>
                 <div class="form-group mb-3">
                   <label for="exampleInputPassword1">Password</label>
-                  <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+                  <% if(loginfor == 'admin' || loginfor == 'Admin') { %>
+                    <input type="password" class="form-control" value="test" name="password" id="exampleInputPassword1" placeholder="Password">
+                  <% } else { %>
+                    <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+                  <% } %>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="handleForm('adminLogin')">Login</button>
               </form>
+              <% if(loginfor != 'admin' && loginfor != 'Admin') { %>
               <div class="oauth">
-                <a href="/auth/signin">O-Auth</a>
+                <a href="/auth/signin">
+                  <img src="/imgs/microsoft.png" >
+                  Sign in with Microsoft
+                </a>
+              <% } %>
               </div>
         </div>
        </div>

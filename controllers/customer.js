@@ -3,6 +3,8 @@ const token = require("../middleware/JWT");
 const customerModel = require("../models/customer");
 const projectModel = require('../models/project');
 const bcrypt = require("bcrypt");
+const { customerOnboardMailTemplate } = require("../templates/mail/sendMailTemplates");
+const { sendEmail } = require("../helper/Mail");
 
 const collectionFields = {
   id: "_id",
@@ -174,7 +176,7 @@ const customerController = {
 
       const getData = await customerModel.findOne({Email: req.body.email});
       if(getData?._id) return res.status(200).json({status: 400, message: 'This Email is already used'});
-
+      let decodedPassword = req.body.password;
       req.body.password = bcrypt.hashSync(req.body.password, 10);
       let body = {};
       for (let key in req.body) {
@@ -184,10 +186,11 @@ const customerController = {
       body[collectionFields['createby']] = req?.authData?._id;
       body[collectionFields['updateby']] = req?.authData?._id;
       const result = await new customerModel(body).save();
-      await projectModel.findOneAndUpdate({_id: req.body.project}, {Customer: result?._id}, {new: true}).exec();
-      if(result?._id)
+      const projectUpdate = await projectModel.findOneAndUpdate({_id: req.body.project}, {Customer: result?._id}, {new: true}).exec();
+      if(result?._id){
+        sendEmail(result?.Email, 'Welcome to Q-Ticket', '', customerOnboardMailTemplate(result?.Name, result?.Email, result?.Email, decodedPassword, projectUpdate?.Name))
         return res.status(200).json({ status: 200, message: "Customer Inserted", data: result });
-      else
+      }else
         return res.status(200).json({staus: 400, message: 'Customer Insertion failed'});
     } catch (error) {
       return HandleError(error);
