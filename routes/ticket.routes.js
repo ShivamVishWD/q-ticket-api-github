@@ -7,5 +7,6 @@ router.post('/insert', token.verifyToken, ticketController.insert);
 router.patch('/update', token.verifyToken, ticketController.update);
 router.delete('/delete/:id', token.verifyToken, ticketController.delete);
 router.patch('/log', token.verifyToken, ticketController.updateLog);
+router.patch('/comment', token.verifyToken, ticketController.updateComment);
 
 module.exports = router;

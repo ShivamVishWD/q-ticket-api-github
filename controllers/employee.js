@@ -108,11 +108,12 @@ const employeeController = {
             if (result != null) {
                 let valid = bcrypt.compareSync(req.body.password, result?.Password);
                 if (valid){
-                    const responseObj = {_id : result?._id, name: result?.Name, email: result?.Email, profile: result?.Role == 'Team Member' ? 'employee' : 'manager'};
+                    const profile = result?.Role == 'Team Member' || result?.Role == null ? 'employee' : 'manager'
+                    const responseObj = {_id : result?._id, name: result?.Name, email: result?.Email, profile: profile};
                     let jwtToken = await token.generateToken(responseObj);
                     req.session.userotken = jwtToken?.token;
                     req.session.userid = result?._id;
-                    req.session.profile = result?.Role == 'Team Member' ? 'employee' : 'manager';
+                    req.session.profile = profile;
                     req.session.username = result?.Name;
                     return res
                     .status(200)

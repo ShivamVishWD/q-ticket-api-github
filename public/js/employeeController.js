@@ -1,10 +1,10 @@
-let url = Base_url;
 let projectOfEmployee = [];
 let allProjects = [];
 
-async function getEmployees(){
+async function getEmployees(projectId){
     try{
-        const apiUrl = url + 'api/employee/get';
+        let fetchUrl = profile == 'manager' ? projectId ? 'api/employee/get?role=Team Member&project='+projectId : 'api/employee/get?role=Team Member' : 'api/employee/get'
+        const apiUrl = url + fetchUrl;
         console.log('api url : ',apiUrl)
         let response = await fetch(apiUrl, {
             method: 'GET',
@@ -20,6 +20,7 @@ async function getEmployees(){
         if(rec_data){
             console.log(response.data.length)
             let tableContainer=document.getElementById('employee_table')
+            tableContainer.innerHTML = '';
             let table=document.createElement('table');
             tableContainer.appendChild(table);
             let tr=document.createElement('tr');
@@ -53,34 +54,7 @@ async function getEmployees(){
     }
 }
 
-async function getProjectsForEmployee(){
-    try{
-        const apiUrl = url + 'api/project/get';
-        console.log('api url : ',apiUrl)
-        let response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer '+token
-            }
-        });
-        response = await response.json();
-        console.log('response : ',response)
-        if(response.status == 200){
-            let templateString = '<option value="">Select Project</option>';
-            for(let item of response.data){
-                templateString += '<option value="'+item._id+'">'+item.Name+'</option>';
-                allProjects.push({id: item._id, name: item.Name})
-            }
-            document.getElementById('project-option').innerHTML = templateString;
-        }
-    }catch(error){
-        console.log('error : ',error)
-    }
-}
-
 getEmployees();
-getProjectsForEmployee();
 
 async function addemployee(formData){
     try{
@@ -102,15 +76,4 @@ async function addemployee(formData){
     }catch(error){
         console.log('error : ',error)
     }
-}
-
-function selectedproject(){
-    console.log(allProjects)
-    console.log(document.getElementById('project-option'))
-    console.log(document.getElementById('project-option').value)
-    projectOfEmployee.push(allProjects.find(item => item.id == document.getElementById('project-option').value))
-}
-
-function removeproject(){
-    
 }

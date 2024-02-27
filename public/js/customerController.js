@@ -1,5 +1,3 @@
-let url = Base_url;
-
 async function getCustomers(){
     try{
         const apiUrl = url + 'api/customer/get';

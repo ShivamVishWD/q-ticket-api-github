@@ -1,65 +1,19 @@
-let url = Base_url;
-console.log(profile, userid)
-let userprojects = [];
-async function getProjectsForTickets(){
-    try{
-        const apiUrl = url + 'api/project/get';
-        console.log('api url : ',apiUrl)
-        let response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer '+token
+let editorInstance = '';
+
+ClassicEditor
+        .create(document.querySelector('#ticket-description'), {
+            // Add any other configuration options you need
+            ckfinder: {
+                // CKFinder configuration file path (e.g., use the connector script provided with CKFinder)
+                // uploadUrl: url+api/addImage,
             }
+        })
+        .then(editor => {
+            editorInstance = editor;
+        })
+        .catch(error => {
+            console.error('Error initializing CKEditor 5:', error);
         });
-        response = await response.json();
-        console.log('response : ',response)
-        if(response.status == 200){
-            let templateString = '<option value="">Select a Project</option>';
-            for(let item of response.data){
-                templateString += '<option value="'+item._id+'">'+item.Name +' - '+ item.Alias +'</option>';
-            }
-            document.querySelectorAll('#project-option').forEach(item => {
-                item.innerHTML = templateString;
-            })
-        }
-    }catch(error){
-        console.log('error : ',error)
-    }
-}
-
-async function getLoggedInUserDetail(){
-    try{
-        const apiUrl = url + 'api/employee/get?id='+userid;
-        console.log('api url : ',apiUrl)
-        let response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer '+token
-            }
-        });
-        response = await response.json();
-        console.log('response : ',response)
-        if(response.status == 200){
-            if(response.data.length > 0){
-                let template = '';
-                for(let item of response.data[0].Project){
-                    template += `<button style="margin-left: 1rem;" value=${item._id} onClick=\'ticketOfProject(${JSON.stringify(item._id)})\'>${item.Name} - ${item.Alias}</button>`
-
-                }
-                document.getElementById('existingProject').innerHTML = template;
-            }
-        }
-    }catch(error){
-        console.log('error : ',error)
-    }
-}
-
-if(profile == 'admin' || profile == 'Admin'){
-    getProjectsForTickets();
-}
-getLoggedInUserDetail();
 
 async function ticketOfProject(project_id){
     try{
@@ -160,7 +114,11 @@ function getTypeBadge(badgeCode) {
 
 async function createTicket(formData){
     try{
+        
         console.log('formData : ',formData)
+        const data = editorInstance.getData();
+
+        array.append('BlogContent', data);
         const apiUrl = url + 'api/ticket/insert';
         let response = await fetch(apiUrl, {
             method: 'POST',

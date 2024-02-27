@@ -19,6 +19,8 @@
         <% } else { %>
             <a href="/customers"><img src="/imgs/costumer.png" alt="customers">Customers</a>
         <% } %>
+      <% } %>
+      <% if(profile != 'Employee' && profile != 'employee') { %>
         <% if(pagename == 'employees') { %>
             <a href="/employees" class="active_class"><img src="/imgs/work-from-home.png" alt="teams">Team</a>
         <% } else { %>

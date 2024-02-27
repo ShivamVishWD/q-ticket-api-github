@@ -1,5 +1,3 @@
-let url = Base_url;
-
 async function getCounts(){
     // Get Total no. of Projects
     try{

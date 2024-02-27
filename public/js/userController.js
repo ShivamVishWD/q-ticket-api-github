@@ -1,7 +1,7 @@
 async function userLogin(formData){
     console.log('form data : ',formData)
     let loginUrl = loginfor == 'admin' ? 'api/admin/login' : 'api/employee/login'
-    let apiUrl = Base_url+loginUrl;
+    let apiUrl = url+loginUrl;
     console.log('apiUrl : ',apiUrl)
     let response = await fetch(apiUrl, {
         method: 'POST',

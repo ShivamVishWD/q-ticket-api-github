@@ -16,6 +16,10 @@ const collectionFields = {
     estimate: 'EstimateDateTime',
     actual: 'ActualDateTime',
     status: 'Status',
+    logby: "LogBy",
+    logtime: "LogTime",
+    activity: "Activity",
+    comment: "Comments",
     createby: 'CreatedBy',
     updateby: 'LastModifiedBy'
 }
@@ -154,6 +158,42 @@ const ticketController = {
             
             for(let key in req.body)
                 updateObj[collectionFields[key]] = req.body[key]
+
+            const result = await ticketModel.findOneAndUpdate(filterObj,{$push: {Logs: updateObj}},{new: true}).exec();
+            if(result?._id)
+                return res.status(200).json({status: 200, message: 'Log updated'});
+            else
+                return res.status(200).json({status: 400, message: 'Log updation failed'});
+        }catch(error){
+            return HandleError(error)
+        }
+    },
+
+    updateComment: async(req, res) => {
+        try{
+            let filterObj = {};
+            let updateObj = {};
+
+            if(req?.authData && req?.authData?.profile == 'customer')
+                return res.status(200).json({status: 400, message: 'Permission Denied'});
+
+            if(!req.query || Object.keys(req.query).length == 0)
+                return res.status(200).json({status: 400, message: 'Filter crieteria missing'});
+
+            if(!req.body || Object.keys(req.body).length == 0)
+                return res.status(200).json({status: 400, message: 'Update field is missing from request body'});
+
+            for(let key in req.query)
+                filterObj[collectionFields[key]] = req.query[key]
+            
+            for(let key in req.body)
+                updateObj[collectionFields[key]] = req.body[key]
+            
+            const result = await ticketModel.findOneAndUpdate(filterObj,{$push: updateObj},{new: true}).exec();
+            if(result?._id)
+                return res.status(200).json({status: 200, message: 'Comment updated'});
+            else
+                return res.status(200).json({status: 400, message: 'Comment updation failed'});
         }catch(error){
             return HandleError(error)
         }

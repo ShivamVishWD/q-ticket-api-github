@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
@@ -41,31 +40,29 @@ const schema = new Schema({
         default: "Low"
     },
     Logs: [
-        {
-            type: new Schema({
-                LogBy: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    required: false,
-                    ref: 'employee',
-                },
-                ActivityTime: {
-                    type: Date,
-                    required: false,
-                    default: Date.now()
-                },
-                ActivityDescription: {
-                    type: String,
-                    required: false,
-                    default: null
-                },
-                Comment: {
-                    type: String,
-                    required: false,
-                    default: null
-                }
-            })
-        }
+        new Schema({
+            LogBy: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: false,
+                ref: 'employee',
+            },
+            LogTime: {
+                type: String,
+                required: false,
+                default: null
+            },
+            Activity: {
+                type: String,
+                required: false,
+                default: null
+            }
+        }, {timestamps: true})
     ],
+    Comments: [{
+        type: String,
+        required: false,
+        default: null
+    }],
     EstimateDateTime: {
         type: Date,
         required: false,

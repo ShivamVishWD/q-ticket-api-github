@@ -1,4 +1,3 @@
-let url = Base_url;
 let all_ptojects;
 
 async function getProjects() {
@@ -91,7 +90,7 @@ async function getManagers() {
 }
 
 getProjects();
-getManagers();
+// getManagers();
 
 async function createproject(formData) {
     try {
