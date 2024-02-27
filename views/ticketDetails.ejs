@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link href="/scss/global.css" rel="stylesheet" type="text/css">
+    <title><%= pagetitle %></title>
+</head>
+<body>
+    <div class="container-fluid admin_dashboard">
+        <%- include('partials/sidebar.ejs') %>
+        <div class="dashboard_view container-fluid">
+            <%- include('partials/topbar.ejs') %>
+            
+        </div>
+    </div>
+    
+  <script type="text/javascript">
+    const Base_url = "<%= url %>";
+    const token = "<%= usertoken %>";
+    const userid = "<%= userid %>";
+    const profile = "<%= profile %>";
+  </script>
+  <script src="/js/validation.js"></script>
+</body>
+</html>

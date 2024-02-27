@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const ticketController = require('../controllers/ticket');
 const token = require('../middleware/JWT');
+const upload = require('../middleware/fileuploader');
 
 router.get('/get', token.verifyToken, ticketController.get);
 router.post('/insert', token.verifyToken, ticketController.insert);

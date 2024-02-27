@@ -91,6 +91,7 @@
   display: flex;
 }
 .admin_dashboard .nav_side {
+  position: fixed;
   background-color: black;
   width: 15%;
   height: 100vh;
@@ -136,6 +137,8 @@
 }
 .admin_dashboard .dashboard_view {
   padding: 20px;
+  width: 85%;
+  margin-left: 15%;
 }
 .admin_dashboard .dashboard_view .dashborad_header {
   display: flex;

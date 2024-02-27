@@ -41,7 +41,7 @@ const ticketController = {
 
             filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
             
-            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate({path: 'CreatedBy', model: 'admin'}).populate({path: 'LastModifiedBy', model: 'admin'});
+            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate('CreatedBy').populate('LastModifiedBy');
             return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
         }catch(error){
             console.log('error : ',error)

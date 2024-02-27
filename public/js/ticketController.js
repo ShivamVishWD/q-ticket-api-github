@@ -1,5 +1,5 @@
 let editorInstance = '';
-
+/*
 ClassicEditor
         .create(document.querySelector('#ticket-description'), {
             // Add any other configuration options you need
@@ -14,7 +14,7 @@ ClassicEditor
         .catch(error => {
             console.error('Error initializing CKEditor 5:', error);
         });
-
+*/
 async function ticketOfProject(project_id){
     try{
         console.log('project id : ',project_id)
@@ -68,7 +68,7 @@ async function ticketOfProject(project_id){
                     let td3=document.createElement('td')
                     let td4=document.createElement('td')
                     let td5=document.createElement('td')
-                    td1.innerHTML=`<a href="#">${response.data[i].TicketNumber}</a>`
+                    td1.innerHTML=`<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ticket_detail_modal" onClick=\'showSingleTicket(${JSON.stringify(response.data[i])})\'>${response.data[i].TicketNumber}</a>`
                     tr1.appendChild(td1)
                     td2.innerText=response.data[i].Subject
                     tr1.appendChild(td2)
@@ -97,6 +97,14 @@ async function ticketOfProject(project_id){
     }
 }
 
+async function showSingleTicket(ticketDetail) {
+    try{
+        console.log(ticketDetail)
+    }catch(error){
+        console.log('error : ',error)
+    }
+}
+
 function getTypeBadge(badgeCode) {
     if (badgeCode == 'Story'){
         return `<span class="badge text-bg-success" title="Story">Story</span>`;
@@ -116,9 +124,9 @@ async function createTicket(formData){
     try{
         
         console.log('formData : ',formData)
-        const data = editorInstance.getData();
+        // const data = editorInstance.getData();
 
-        array.append('BlogContent', data);
+        // array.append('BlogContent', data);
         const apiUrl = url + 'api/ticket/insert';
         let response = await fetch(apiUrl, {
             method: 'POST',

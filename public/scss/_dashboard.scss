@@ -5,6 +5,7 @@
     margin: 0;
     display: flex;
     .nav_side{
+        position: fixed;
         background-color: black;
         width: 15%;
         height: 100vh;
@@ -60,6 +61,8 @@
     }
     .dashboard_view{
         padding: 20px;
+        width: 85%;
+        margin-left: 15%;
         .dashborad_header{
             display: flex;
             justify-content: space-between;
