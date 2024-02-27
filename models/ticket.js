@@ -17,6 +17,11 @@ const schema = new Schema({
         required: false,
         default: null
     },
+    Attachments: {
+        type: Array,
+        required: false,
+        default: []
+    },
     Project: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -25,7 +30,8 @@ const schema = new Schema({
     AssignTo: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
-        ref: 'employee'
+        ref: 'employee',
+        default: null
     },
     TicketType: {
         type: String,
@@ -66,10 +72,12 @@ const schema = new Schema({
     EstimateDateTime: {
         type: Date,
         required: false,
+        default: null
     },
     ActualDateTime: {
         type: Date,
-        required: false
+        required: false,
+        default: null
     },
     Status: {
         type: String,

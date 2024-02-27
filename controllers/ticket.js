@@ -8,6 +8,7 @@ const collectionFields = {
     ticket: "TicketNumber",
     subject: 'Subject',
     description: 'Description',
+    attachments: 'Attachments',
     project: 'Project',
     assign: 'AssignTo',
     type: "TicketType",
@@ -41,8 +42,9 @@ const ticketController = {
 
             filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
             
-            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate('CreatedBy').populate('LastModifiedBy');
-            return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
+            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate({path: 'CreatedBy', model: 'admin'}).populate({path: 'LastModifiedBy', model: 'admin'});
+            const baseUrl = req.protocol + '://' + req.headers.host + '/';
+            return res.status(200).json({status: 200, message: 'Records Fetched', baseUrl, data: result});
         }catch(error){
             console.log('error : ',error)
             return HandleError(error)
@@ -51,7 +53,6 @@ const ticketController = {
 
     insert: async(req, res) => {
         try{
-            console.log(req.body)
             if(req.authData && req?.authData?.profile == 'employee')
                 return res.status(200).json({status:400, message: 'Permissio Denied'})
 
@@ -75,6 +76,15 @@ const ticketController = {
             for(let key in req.body){
                 body[collectionFields[key]] = req.body[key];
             }
+
+            let attachments = [];
+            if(req.files && req.files.length > 0){
+                for(let item of req.files){
+                    const filePath = 'uploads/'+item?.filename;
+                    attachments.push(filePath);
+                }
+            }
+            body[collectionFields['attachments']] = attachments;
             body[collectionFields['ticket']] = String(getProject?.Alias != null ? getProject?.Alias : getProject?.Name).toUpperCase() + "-" + String((getCountOfTickets+1)).padStart(4, '0');
             body[collectionFields['createby']] = req?.authData?._id;
             body[collectionFields['updateby']] = req?.authData?._id;
@@ -97,7 +107,10 @@ const ticketController = {
             if(!req.query || Object.keys(req.query).length == 0)
                 return res.status(200).json({status: 400, message: 'Filter crieteria missing'});
 
-            if(!req.body || Object.keys(req.body).length == 0)
+            if(req.files && req.files.length == 0)
+                return res.status(200).json({status: 400, message: 'Missing file attachment'});
+            
+            if((!req.body || Object.keys(req.body).length == 0) && !req.files)
                 return res.status(200).json({status: 400, message: 'Update field is missing'});
 
             for(let key in req.query)
@@ -106,6 +119,14 @@ const ticketController = {
             for(let key in req.body)
                 updateObj[collectionFields[key]] = req.body[key]
 
+            let attachments = [];
+            if(req.files && req.files.length > 0){
+                for(let item of req.files){
+                    const filePath = 'uploads/'+item?.filename;
+                    attachments.push(filePath)
+                }
+                updateObj[collectionFields['attachments']] = attachments;
+            }
             const result = await ticketModel.findOneAndUpdate(filterObj,updateObj,{new: true}).exec();
             if(result?._id)
                 return res.status(200).json({status: 200, message: 'Record updated'});

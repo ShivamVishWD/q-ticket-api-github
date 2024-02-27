@@ -122,7 +122,7 @@ async function handleAEDtrigger(projectname, modalname) {
     if (modalname == "assign") {
         document.getElementById('Assign_modal_label').innerText = projectname;
         try {
-            const apiUrl = url + 'api/employee/get';
+            const apiUrl = url + 'api/employee/get?role=Team Member';
             let response = await fetch(apiUrl, {
                 method: 'Get',
                 headers: {
