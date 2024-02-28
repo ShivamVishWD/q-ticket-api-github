@@ -17,7 +17,7 @@ ClassicEditor
 */
 async function ticketOfProject(project_id){
     try{
-        console.log('project id : ',project_id)
+        // console.log('project id : ',project_id)
         let projectId = null;
         if(project_id)
             projectId = project_id
@@ -53,9 +53,12 @@ async function ticketOfProject(project_id){
             thead4.innerText='Status'
             let thead5=document.createElement('th');
             thead5.innerText='Type'
+            let thead6=document.createElement('th');
+            thead6.innerText='Assigned To'
             tr.appendChild(thead);
             tr.appendChild(thead2);
             tr.appendChild(thead3);
+            tr.appendChild(thead6);
             tr.appendChild(thead4);
             tr.appendChild(thead5);
             table.appendChild(tr);
@@ -68,6 +71,7 @@ async function ticketOfProject(project_id){
                     let td3=document.createElement('td')
                     let td4=document.createElement('td')
                     let td5=document.createElement('td')
+                    let td6=document.createElement('td')
                     td1.innerHTML=`<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ticket_detail_modal" onClick=\'showSingleTicket(${JSON.stringify(response.data[i])})\'>${response.data[i].TicketNumber}</a>`
                     tr1.appendChild(td1)
                     td2.innerText=response.data[i].Subject
@@ -75,6 +79,15 @@ async function ticketOfProject(project_id){
 
                     td3.innerText=response.data[i].Description
                     tr1.appendChild(td3)
+
+                    if(response.data[i].AssignTo ==  null){
+                        td6.innerText="Not Assign Yet";
+                    }else{
+                        td6.innerText=response.data[i].AssignTo.Name;
+                    }
+                    tr1.appendChild(td6);
+                    
+
                     td4.innerHTML=`<b>${response.data[i].Status}</b>`
                     tr1.appendChild(td4)
                     td5.innerHTML=getTypeBadge(response.data[i].TicketType)
@@ -96,20 +109,153 @@ async function ticketOfProject(project_id){
         console.log('error : ',error)
     }
 }
+let employee_list;
+async function getEmployeesOfProject(projectId){
+    try{
+        console.log('projects Is ID : ', projectId)
+        let fetchUrl =  'api/employee/get?project='+projectId;
+        const apiUrl = url + fetchUrl;
+        console.log('api url : ',apiUrl)
+        let response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer '+token
+            }
+        });
+        response = await response.json();
+        console.log('response employee : ',response)
+        employee_list=response;
+    }catch(error){
+        console.log('catch error : ',error);
+    }
+}
 
+document.getElementById('assigner_detail').addEventListener('click', ()=>{
+    document.getElementById('assign_employee_modal').classList.add('show');
+    document.getElementById('assign_employee_modal').style.display="block";
+
+    let select=document.getElementById('update_assigneee');
+
+    for(i=0;i<employee_list.data.length;i++){
+        let option_tag=document.createElement('option');
+        option_tag.setAttribute('value', employee_list.data[i]._id);
+        option_tag.innerText=employee_list.data[i].Name;
+        select.appendChild(option_tag);
+    }
+
+    console.log(employee_list,'employee_list')
+
+
+})
+document.getElementById('close_assign_modal').addEventListener('click',() =>{
+    document.getElementById('assign_employee_modal').classList.remove('show');
+    document.getElementById('assign_employee_modal').classList.add('fade');
+    document.getElementById('assign_employee_modal').style.display="none";
+
+
+})
+document.getElementById('close_assign_modal_btn').addEventListener('click',() =>{
+    document.getElementById('assign_employee_modal').classList.remove('show');
+    document.getElementById('assign_employee_modal').classList.add('fade');
+    document.getElementById('assign_employee_modal').style.display="none";
+
+
+})
+async function updateAssignee(){
+   let id_employee= document.getElementById('update_assigneee').value ;
+   let ticket_id;
+
+   if(id_employee!="select"){
+    let update_value={
+        assign:id_employee
+    }
+    ticket_id=current_ticket_id
+    // console.log(ticket_id,'get ticket id')
+    try{
+        const apiUrl = url + 'api/ticket/update?id='+ticket_id;
+        // console.log(apiUrl,'api url console')
+        let response = await fetch(apiUrl, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+token
+            },
+            body: JSON.stringify(update_value)
+        })
+        response = await response.json();
+        console.log('response update employee : ',response)
+        if(response.status == 200){
+            alert('updated sucessfully');
+            window.location.reload();
+        }
+    }catch(error){
+        console.log('error : ',error)
+    }
+
+   }else{
+    console.log(id_employee,'vawdertyee')
+   }
+}
+async function saveComment(){
+    let u_comment=document.getElementById('comment_imput_value').value;
+    // console.log(u_comment,'user enterd comment');
+    let ticket_id;
+    ticket_id=current_ticket_id
+
+    if(u_comment!=""){
+        let comment_obj={
+            by:userid,
+            name:username,
+            comment:u_comment
+        }
+        try{
+            const apiUrl = url + 'api/ticket/comment?id='+ticket_id;
+            // console.log(apiUrl,'api url console')
+            let response = await fetch(apiUrl, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+token
+                },
+                body: JSON.stringify(comment_obj)
+            })
+            response = await response.json();
+            // console.log('response update comment : ',response)
+            if(response.status == 200){
+                alert('comment updated sucessfully');
+                window.location.reload();
+            }
+        }catch(error){
+            console.log('error : ',error)
+        }
+    }
+    else{
+        alert('comment cannot be blank')
+    }
+}
+
+
+let current_ticket_id;
 async function showSingleTicket(ticketDetail) {
     try{
+        getEmployeesOfProject(ticketDetail?.Project?._id);
         console.log(ticketDetail,'tocket details');
         document.getElementById('ticket_no').innerText=ticketDetail.TicketNumber;
         document.getElementById("ticket_subject").innerText=ticketDetail.Subject;
-        document.getElementById('createdby__detail').innerText=ticketDetail.CreatedBy?.Name;
+        document.getElementById('createdby__detail').innerText=ticketDetail.CreatedBy?.Name ? ticketDetail.CreatedBy?.Name : "N/A";
         document.getElementById('ticket_des_text').innerText=ticketDetail.Description;
-        document.getElementById('assigner_detail').innerText=ticketDetail.AssignTo;
+        document.getElementById('assigner_detail').innerText=ticketDetail.AssignTo != null ? ticketDetail.AssignTo?.Name : "Not Assigned Yet";
         document.getElementById('status_detail').innerText=ticketDetail.Status;
         document.getElementById('tickettype_detail').innerText=ticketDetail.TicketType;
         document.getElementById('ticketpriority_detail').innerText=ticketDetail.TicketPriority;
         document.getElementById('createdat_detail').innerText=ticketDetail.createdAt;
         document.getElementById('updatedat_detail').innerText=ticketDetail.updatedAt;
+        document.getElementById('estimate_detail').innerText=ticketDetail.EstimateDateTime;
+        document.getElementById('actualtime_detail').innerText=ticketDetail.ActualDateTime;
+
+
+        current_ticket_id=ticketDetail._id
 
 
         if(ticketDetail.Comments.length>0){
