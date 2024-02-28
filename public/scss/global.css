@@ -318,4 +318,121 @@
   border: solid #FF698D;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+.ticket_des_modal {
+  min-height: 100vh;
+}
+.ticket_des_modal .ticket_des_header {
+  display: flex;
+  width: 100%;
+}
+.ticket_des_modal .ticket_des_header #ticket_subject {
+  margin-left: 30px;
+}
+.ticket_des_modal .ticket_des_body {
+  display: flex;
+  width: 100%;
+}
+.ticket_des_modal .ticket_des_body .des_text {
+  width: 70%;
+  padding: 15px;
+  border-right: 1px solid rgba(128, 128, 128, 0.374);
+}
+.ticket_des_modal .ticket_des_body .des_text p {
+  text-transform: capitalize;
+}
+.ticket_des_modal .ticket_des_body .ticket_details_bar {
+  width: 30%;
+}
+.ticket_des_modal .ticket_des_body .ticket_details_bar .ticket_det_bar_header {
+  padding: 10px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.374);
+}
+.ticket_des_modal .ticket_des_body .ticket_details_bar .ticket_det_bar_header h5 {
+  text-align: center;
+}
+.ticket_des_modal .ticket_des_body .ticket_details_bar .ticket_details_body_bar {
+  padding: 20px;
+}
+.ticket_des_modal .ticket_des_body .ticket_details_bar .ticket_details_body_bar .ticket_details_assign_details {
+  display: flex;
+  width: 100%;
+}
+.ticket_des_modal .ticket_des_body .ticket_details_bar .ticket_details_body_bar .ticket_details_assign_details p {
+  width: 50%;
+  font-size: small;
+}
+.ticket_des_modal .ticket_comment_sec {
+  width: 70%;
+  border-right: 1px solid rgba(128, 128, 128, 0.374);
+  min-height: 50vh;
+  padding: 10px;
+  border-top: 1px solid rgba(128, 128, 128, 0.374);
+}
+.ticket_des_modal .ticket_comment_sec .commetns_header {
+  padding: 10px 0px;
+}
+.ticket_des_modal .ticket_comment_sec .commetns_header h6 {
+  font-size: small;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body {
+  padding: 10px;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box {
+  width: 100%;
+  display: flex;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box img {
+  width: 40px;
+  height: 40px;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box .comment_container {
+  width: 90%;
+  margin-left: 2%;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box .comment_container .input_container {
+  border: 1px solid rgba(128, 128, 128, 0.374);
+  width: 100%;
+  padding: 20px 10px;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box .comment_container .input_container input {
+  border: none;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box .comment_container .input_container input:focus {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box .comment_container .input_container input:active {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .user_comment_box {
+  width: 100%;
+  display: flex;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .user_comment_box img {
+  width: 40px;
+  height: 40px;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .user_comment_box .user_comment_container {
+  width: 90%;
+  margin-left: 2%;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .user_comment_box .user_comment_container .comment_user_name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.ticket_des_modal .ticket_comment_sec .comment_sec_body .user_comment_box .user_comment_container .user_comments {
+  font-weight: normal;
+  font-size: small;
+}
+.ticket_des_modal .ticket_comment_sec .comment_action_box {
+  padding: 10px 0px;
+}
+
+td {
+  text-transform: capitalize !important;
 }/*# sourceMappingURL=global.css.map */

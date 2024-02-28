@@ -8,7 +8,8 @@
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/jquery.min.js"></script>
   <link href="/scss/global.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet"
+    type="text/css" />
   <title>
     <%= pagetitle %>
   </title>
@@ -20,18 +21,18 @@
       <div class="dashboard_view container-fluid">
         <%- include('partials/topbar.ejs') %>
           <div class="add_btn_container">
-            <% if(profile == 'admin' || profile == 'Admin') { %>
-            <select name="project" class="form-control project-select" id="project-option"
-              onchange="ticketOfProject()"></select>
-            <% } %>
-            <% if(profile != 'employee' && profile != 'Employee') { %>
-            <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              Create Ticket
-            </button>
-            <% } %>
-            <% if(profile != 'admin' || profile != 'Admin') { %>
-              <div id="existingProject" class="existing-project"></div>
-            <% } %>
+            <% if(profile=='admin' || profile=='Admin' ) { %>
+              <select name="project" class="form-control project-select" id="project-option"
+                onchange="ticketOfProject()"></select>
+              <% } %>
+                <% if(profile !='employee' && profile !='Employee' ) { %>
+                  <button data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Create Ticket
+                  </button>
+                  <% } %>
+                    <% if(profile !='admin' || profile !='Admin' ) { %>
+                      <div id="existingProject" class="existing-project"></div>
+                      <% } %>
           </div>
           <div class="table_view container-fluid" id="ticket_table"></div>
       </div>
@@ -105,20 +106,100 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="ticket_detail_modal" tabindex="-1" aria-labelledby="ticket_detail_modal_label" aria-hidden="true">
+  <div class="modal fade ticket_des_modal" id="ticket_detail_modal" tabindex="-1"
+    aria-labelledby="ticket_detail_modal_label" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ticket_detail_modal_label"></h5>
+        <div class="modal-header ">
+          <div class="ticket_des_header">
+            <h5 class="modal-title" id="ticket_no"></h5>
+            <h5 class="modal-title" id="ticket_subject"></h5>
+          </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-        
+        <div class="modal-body p-0">
+          <div class="ticket_des_body">
+            <div class="des_text">
+              <p id="ticket_des_text"></p>
+            </div>
+            <div class="ticket_details_bar">
+              <div class="ticket_det_bar_header">
+                <h5>Ticket Details</h5>
+              </div>
+              <div class="ticket_details_body_bar">
+                <div class="ticket_details_assign_details">
+                  <p>Created By</p>
+                  <p id="createdby__detail"></p>
+                </div>
+                <div class="ticket_details_assign_details">
+                  <p>Assign To</p>
+                  <p id="assigner_detail"></p>
+                </div>
+                <div class="ticket_details_assign_details">
+                  <p>Ticket Type</p>
+                  <p id="tickettype_detail"></p>
+                </div>
+
+                <div class="ticket_details_assign_details">
+                  <p>Status</p>
+                  <p id="status_detail"></p>
+                </div>
+                <div class="ticket_details_assign_details">
+                  <p>Ticket Priority</p>
+                  <p id="ticketpriority_detail"></p>
+                </div>
+                <div class="ticket_details_assign_details">
+                  <p>created At</p>
+                  <p id="createdat_detail"></p>
+                </div>
+                <div class="ticket_details_assign_details">
+                  <p>updated At</p>
+                  <p id="updatedat_detail"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ticket_comment_sec">
+            <div class="commetns_header">
+              <h6>Activity</h6>
+            </div>
+            <div class="comment_sec_body">
+              <div class="add_comment_box">
+                <img src="/imgs/user.png" alt="user">
+                <div class="comment_container">
+                  <div class="input_container">
+                    <input class="form-control" type="text" placeholder="Comment Here" aria-label="default input example">
+                    </div>
+                    <div class="comment_action_box">
+                      <button type="button" class="btn btn-primary">Save</button>
+                      <button type="button" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
+                
+               
+              </div>
+
+
+              <div id="user_coments_boxx">
+                <!-- <div class="user_comment_box mt-3" id="comment_user_cont">
+                  <img src="/imgs/user.png" alt="user">
+                  <div class="user_comment_container" >
+                    <p class="comment_user_name">user</p>
+                    <p class="user_comments">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ducimus, nihil?</p>
+                  </div>
+                </div> -->
+              </div>
+             
+             
+              
+           
+            </div>
+          </div>
         </div>
-        <div class="modal-footer">
+        <!-- <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" onclick="updateEmpAssign()">Save changes</button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

@@ -261,3 +261,131 @@
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   }
+
+  .ticket_des_modal{
+        min-height: 100vh;
+    .ticket_des_header{
+        display: flex;
+        width: 100%;
+        #ticket_subject{
+            margin-left: 30px;
+        }
+    }
+    .ticket_des_body{
+        display: flex;
+        width: 100%;
+        .des_text{
+            width: 70%;
+            padding: 15px;
+            border-right: 1px solid rgba(128, 128, 128, 0.374);
+            p{
+                text-transform: capitalize;
+            }
+           
+        }
+        .ticket_details_bar{
+            width: 30%;
+            .ticket_det_bar_header{
+                padding: 10px;
+                border-bottom: 1px solid rgba(128, 128, 128, 0.374);
+                h5{
+                    text-align: center;
+                }
+            }
+            .ticket_details_body_bar{
+                padding: 20px;
+                .ticket_details_assign_details{
+                    display: flex;
+                    width: 100%;
+                    p{
+                        width: 50%;
+                        font-size: small;
+                    }
+                }
+            }
+        }
+    }
+    .ticket_comment_sec{
+        width: 70%;
+        border-right: 1px solid rgba(128, 128, 128, 0.374);
+        min-height:50vh ;
+        padding: 10px;
+        border-top: 1px solid rgba(128, 128, 128, 0.374);
+       
+        .commetns_header{
+            padding: 10px 0px;
+            h6{
+                font-size: small;
+            }
+        }
+        .comment_sec_body{
+            padding: 10px;
+            .add_comment_box{
+                width: 100%;
+                display: flex;
+                img{
+                    width: 40px;
+                    height: 40px;
+                }
+                .comment_container{
+                    width :90%;
+                    margin-left: 2%;
+                    .input_container{
+                        border: 1px solid rgba(128, 128, 128, 0.374) ;
+                        width: 100%;
+                        padding: 20px 10px;
+                        input{
+                            border: none;
+    
+                            &:focus{
+                                border: none;
+                                box-shadow: none;
+                                outline: none;
+                            }
+                            &:active{
+                                border: none;
+                                box-shadow: none;
+                                outline: none;
+    
+                            }
+                        }
+                    }
+                }
+               
+            }
+            .user_comment_box{
+                width: 100%;
+                display: flex;
+                img{
+                    width: 40px;
+                    height: 40px;
+                }
+                .user_comment_container{
+                    width :90%;
+                    margin-left: 2%;
+
+                    .comment_user_name{
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                    }
+                    .user_comments{
+                        font-weight: normal;
+                        font-size: small;
+                    }
+                }
+            }
+
+        }
+        .comment_action_box{
+          padding: 10px 0px;
+            // button{
+
+            // }
+        }
+        
+    }
+  }
+
+  td{
+    text-transform: capitalize !important;
+  }

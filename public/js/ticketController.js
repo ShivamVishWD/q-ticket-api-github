@@ -99,7 +99,57 @@ async function ticketOfProject(project_id){
 
 async function showSingleTicket(ticketDetail) {
     try{
-        console.log(ticketDetail)
+        console.log(ticketDetail,'tocket details');
+        document.getElementById('ticket_no').innerText=ticketDetail.TicketNumber;
+        document.getElementById("ticket_subject").innerText=ticketDetail.Subject;
+        document.getElementById('createdby__detail').innerText=ticketDetail.CreatedBy?.Name;
+        document.getElementById('ticket_des_text').innerText=ticketDetail.Description;
+        document.getElementById('assigner_detail').innerText=ticketDetail.AssignTo;
+        document.getElementById('status_detail').innerText=ticketDetail.Status;
+        document.getElementById('tickettype_detail').innerText=ticketDetail.TicketType;
+        document.getElementById('ticketpriority_detail').innerText=ticketDetail.TicketPriority;
+        document.getElementById('createdat_detail').innerText=ticketDetail.createdAt;
+        document.getElementById('updatedat_detail').innerText=ticketDetail.updatedAt;
+
+
+        if(ticketDetail.Comments.length>0){
+            let comment_sec=document.getElementById('user_coments_boxx');
+
+          
+            for(i=0;i<ticketDetail.Comments.length;i++){
+                let parent_div=document.createElement('div');
+                parent_div.setAttribute('class','user_comment_box mt-3');
+                parent_div.setAttribute('id','comment_user_cont');
+    
+                let img_tag=document.createElement('img');
+                img_tag.setAttribute('src','/imgs/user.png')
+    
+                let comment_div=document.createElement('div');
+                comment_div.setAttribute('class','user_comment_container');
+    
+                let us_name=document.createElement('p');
+                us_name.setAttribute('class','comment_user_name');
+                us_name.innerText=ticketDetail.Comments[i].Name;
+                
+                let us_comment=document.createElement('p');
+                us_comment.innerText=ticketDetail.Comments[i].Comment;
+                us_comment.setAttribute('class','user_comments');
+    
+               
+                parent_div.appendChild(img_tag);
+                parent_div.appendChild(comment_div)
+    
+                comment_div.appendChild(us_name);
+                comment_div.appendChild(us_comment);
+    
+                comment_sec.appendChild(parent_div)
+    
+            }       
+        }
+
+
+
+
     }catch(error){
         console.log('error : ',error)
     }
