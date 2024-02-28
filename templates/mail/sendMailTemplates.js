@@ -34,4 +34,21 @@ function teamMemberOnboardMailTamplate(name, email, userid, password){
     <b>Q-Ticket <i style="font-size: 12px;">(Powered by Quadrafort Technologies)</i></b>`;
 }
 
-module.exports = { customerOnboardMailTemplate, teamMemberOnboardMailTamplate }
+function ticketCreationMailTemplate(ticketNo, ticketSubject, ticketDesc, redirectUrl, updateBy, updateTime){
+    return `<br/>
+    <b>${ticketNo}</b>
+    <br/>
+    <br/>
+    <b style="font-size: 18px;">${ticketSubject}</b><br/>
+    <br/>
+    <p><b>Update By : </b> ${updateBy}y</p>
+    <p><b>Update On : </b> ${updateTime}</p>
+    <p>${ticketDesc}</p>
+    <a href="${redirectUrl}" style="background-color: #FF698D; color: white; text-decoration: none; padding: 0.6rem 1rem; font-size: 14px; border-radius: 10px;">View Ticket</a><br/>
+    <br/>
+    <b>Regards,</b>
+    <br/>
+    <b>Q-Ticket <i style="font-size: 12px;">(Powered by Quadrafort Technologies)</i></b>`;
+}
+
+module.exports = { customerOnboardMailTemplate, teamMemberOnboardMailTamplate, ticketCreationMailTemplate }
