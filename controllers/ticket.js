@@ -49,7 +49,7 @@ const ticketController = {
 
             filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
             
-            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo');
+            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate("Logs.LogBy");
             const baseUrl = req.protocol + '://' + req.headers.host + '/';
             return res.status(200).json({status: 200, message: 'Records Fetched', baseUrl, data: result});
         }catch(error){
