@@ -1,7 +1,12 @@
 const { HandleError } = require('../helper/ErrorHandler');
-const helper = require('../helper/Common');
 const ticketModel = require('../models/ticket');
 const projectModel = require('../models/project');
+const adminModel = require('../models/admin')
+const employeeModel = require('../models/employee')
+const customerModel = require('../models/customer')
+const { sendEmail } = require('../helper/Mail');
+const { ticketCreationMailTemplate } = require('../templates/mail/sendMailTemplates');
+const moment = require('moment-timezone');
 
 const collectionFields = {
     id: "_id",
@@ -20,7 +25,9 @@ const collectionFields = {
     logby: "LogBy",
     logtime: "LogTime",
     activity: "Activity",
-    comment: "Comments",
+    comment: "Comment",
+    by: "By",
+    name: "Name",
     createby: 'CreatedBy',
     updateby: 'LastModifiedBy'
 }
@@ -42,7 +49,7 @@ const ticketController = {
 
             filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
             
-            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate({path: 'CreatedBy', model: 'admin'}).populate({path: 'LastModifiedBy', model: 'admin'});
+            const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo');
             const baseUrl = req.protocol + '://' + req.headers.host + '/';
             return res.status(200).json({status: 200, message: 'Records Fetched', baseUrl, data: result});
         }catch(error){
@@ -67,7 +74,7 @@ const ticketController = {
             if(mandatoryFields.length > 0)
                 return res.status(200).json({status: 400, message: 'Mandatory Fields Error', fieds: mandatoryFields})
 
-            const getProject = await projectModel.findOne({_id: req.body.project, IsActive: true, IsDeleted: false}).select('Name Alias');
+            const getProject = await projectModel.findOne({_id: req.body.project, IsActive: true, IsDeleted: false}).populate('Manager');
             if(getProject == null) return res.status(200).json({status: 400, message: 'Ticket not created because of Inactive project'});
 
             const getCountOfTickets = await ticketModel.find({Project: req.body.project}).countDocuments();
@@ -84,15 +91,32 @@ const ticketController = {
                     attachments.push(filePath);
                 }
             }
+
+            let createUpdateByObj = {};
+
+            let getUserDetail = await adminModel.findOne({_id: req?.authData?._id})
+            if(getUserDetail == null)
+                getUserDetail = await customerModel.findOne({_id: req?.authData?._id})
+            if(getUserDetail == null)
+                getUserDetail = await employeeModel.findOne({_id: req?.authData?._id})
+
+            createUpdateByObj = {
+                Id: getUserDetail?._id,
+                Name: getUserDetail?.Name,
+                Email: getUserDetail?.Email
+            }
+            console.log(createUpdateByObj)
             body[collectionFields['attachments']] = attachments;
             body[collectionFields['ticket']] = String(getProject?.Alias != null ? getProject?.Alias : getProject?.Name).toUpperCase() + "-" + String((getCountOfTickets+1)).padStart(4, '0');
-            body[collectionFields['createby']] = req?.authData?._id;
-            body[collectionFields['updateby']] = req?.authData?._id;
+            body[collectionFields['createby']] = createUpdateByObj;
+            body[collectionFields['updateby']] = createUpdateByObj;
 
             const result = await new ticketModel(body).save();
-            if(result?._id)
+            if(result?._id){
+                if(getProject?.Manager != null)
+                    sendEmail(getProject?.Manager?.Email, result?.TicketNumber + ' - ' + result?.Subject, '', ticketCreationMailTemplate(result?.TicketNumber, result?.Subject, result?.Description, '', result?.CreatedBy?.Name, moment(result?.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')))
                 return res.status(200).json({status: 200, message: 'Record created', data: result})
-            else
+            }else
                 return res.status(200).json({status: 400, message: 'Record creation failed'})
         }catch(error){
             return HandleError(error)
@@ -119,6 +143,20 @@ const ticketController = {
             for(let key in req.body)
                 updateObj[collectionFields[key]] = req.body[key]
 
+            let updatedBy = {};
+
+            let getUserDetail = await adminModel.findOne({_id: req?.authData?._id})
+            if(getUserDetail == null)
+                getUserDetail = await customerModel.findOne({_id: req?.authData?._id})
+            if(getUserDetail == null)
+                getUserDetail = await employeeModel.findOne({_id: req?.authData?._id})
+
+            updatedBy = {
+                Id: getUserDetail?._id,
+                Name: getUserDetail?.Name,
+                Email: getUserDetail?.Email
+            }
+            
             let attachments = [];
             if(req.files && req.files.length > 0){
                 for(let item of req.files){
@@ -127,6 +165,7 @@ const ticketController = {
                 }
                 updateObj[collectionFields['attachments']] = attachments;
             }
+            updateObj[collectionFields['updateby']] = updatedBy;
             const result = await ticketModel.findOneAndUpdate(filterObj,updateObj,{new: true}).exec();
             if(result?._id)
                 return res.status(200).json({status: 200, message: 'Record updated'});
@@ -195,9 +234,6 @@ const ticketController = {
             let filterObj = {};
             let updateObj = {};
 
-            if(req?.authData && req?.authData?.profile == 'customer')
-                return res.status(200).json({status: 400, message: 'Permission Denied'});
-
             if(!req.query || Object.keys(req.query).length == 0)
                 return res.status(200).json({status: 400, message: 'Filter crieteria missing'});
 
@@ -207,10 +243,18 @@ const ticketController = {
             for(let key in req.query)
                 filterObj[collectionFields[key]] = req.query[key]
             
+            let commentBy = {};
+
+            let getUserDetail = await adminModel.findOne({_id: req?.authData?._id})
+            if(getUserDetail == null)
+                getUserDetail = await customerModel.findOne({_id: req?.authData?._id})
+            if(getUserDetail == null)
+                getUserDetail = await employeeModel.findOne({_id: req?.authData?._id})
+
             for(let key in req.body)
                 updateObj[collectionFields[key]] = req.body[key]
             
-            const result = await ticketModel.findOneAndUpdate(filterObj,{$push: updateObj},{new: true}).exec();
+            const result = await ticketModel.findOneAndUpdate(filterObj,{$push: {Comments: updateObj}},{new: true}).exec();
             if(result?._id)
                 return res.status(200).json({status: 200, message: 'Comment updated'});
             else

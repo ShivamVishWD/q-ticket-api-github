@@ -41,7 +41,7 @@ function ticketCreationMailTemplate(ticketNo, ticketSubject, ticketDesc, redirec
     <br/>
     <b style="font-size: 18px;">${ticketSubject}</b><br/>
     <br/>
-    <p><b>Update By : </b> ${updateBy}y</p>
+    <p><b>Update By : </b> ${updateBy}</p>
     <p><b>Update On : </b> ${updateTime}</p>
     <p>${ticketDesc}</p>
     <a href="${redirectUrl}" style="background-color: #FF698D; color: white; text-decoration: none; padding: 0.6rem 1rem; font-size: 14px; border-radius: 10px;">View Ticket</a><br/>

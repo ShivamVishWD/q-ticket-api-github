@@ -64,11 +64,25 @@ const schema = new Schema({
             }
         }, {timestamps: true})
     ],
-    Comments: [{
-        type: String,
-        required: false,
-        default: null
-    }],
+    Comments: [
+        new Schema({
+            Name: {
+                type: String,
+                required: false,
+                default: null
+            },
+            By: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: false,
+                default: null
+            },
+            Comment: {
+                type: String,
+                required: false,
+                default: null
+            },
+        }, {timestamps: true})
+    ],
     EstimateDateTime: {
         type: Date,
         required: false,
@@ -86,16 +100,22 @@ const schema = new Schema({
         default: 'New'
     },
     CreatedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        references: { type: [mongoose.Schema.Types.ObjectId], refPath: 'model_type' },
-        model_type: {  type: String, enum: ['customer', 'admin'], required: false }
+        // type: mongoose.Schema.Types.ObjectId,
+        // required: true,
+        // references: { type: [mongoose.Schema.Types.ObjectId], refPath: 'model_type' },
+        // model_type: {  type: String, enum: ['customer', 'admin'], required: false }
+        type: Object,
+        required: false,
+        default: null
     },
     LastModifiedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        references: { type: [mongoose.Schema.Types.ObjectId], refPath: 'model_type' },
-        model_type: {  type: String, enum: ['customer', 'admin', 'employee'], required: false }
+        // type: mongoose.Schema.Types.ObjectId,
+        // required: true,
+        // references: { type: [mongoose.Schema.Types.ObjectId], refPath: 'model_type' },
+        // model_type: {  type: String, enum: ['customer', 'admin', 'employee'], required: false }
+        type: Object,
+        required: false,
+        default: null
     },
     IsActive: {
         type: Boolean,
