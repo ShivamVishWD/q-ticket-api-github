@@ -89,30 +89,32 @@ const schema = new Schema({
         default: null
     },
     ActualDateTime: {
+        type: String,
+        required: false,
+        default: null
+    },
+    ClosedDateTime: {
         type: Date,
         required: false,
         default: null
     },
+    ReopenDateTime: {
+        type: Date,
+        required: false,
+        default : null
+    },
     Status: {
         type: String,
         required: true,
-        enum: ['New', 'Open', 'Ready To Dev', 'Assign To Dev', 'Dev Start', 'Dev Done', 'In QA', 'QA Done', 'Pending to Close', 'Closed', 'Reopen'],
+        enum: ['New', 'Open', 'Ready To Dev', 'Assign To Dev', 'Dev Start', 'Dev Done', 'In QA', 'QA Done', 'Solved', 'Closed', 'Reopen'],
         default: 'New'
     },
     CreatedBy: {
-        // type: mongoose.Schema.Types.ObjectId,
-        // required: true,
-        // references: { type: [mongoose.Schema.Types.ObjectId], refPath: 'model_type' },
-        // model_type: {  type: String, enum: ['customer', 'admin'], required: false }
         type: Object,
         required: false,
         default: null
     },
     LastModifiedBy: {
-        // type: mongoose.Schema.Types.ObjectId,
-        // required: true,
-        // references: { type: [mongoose.Schema.Types.ObjectId], refPath: 'model_type' },
-        // model_type: {  type: String, enum: ['customer', 'admin', 'employee'], required: false }
         type: Object,
         required: false,
         default: null

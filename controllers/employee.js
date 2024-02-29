@@ -45,7 +45,7 @@ const employeeController = {
 
     insert: async(req, res) => {
         try{
-            if(req?.authData && req?.authData?.profile != 'admin')
+            if(req?.authData && (req?.authData?.profile != 'admin' && req?.authData?.profile != 'manager'))
                 return res.status(200).json({status: 400, message: 'Permission Denied'});
 
             if(!req.body && Object.keys(req.body).length == 0)
@@ -167,7 +167,7 @@ const employeeController = {
 
     delete: async(req, res) => {
         try{
-            if(req?.authData && req?.authData?.profile != 'admin')
+            if(req?.authData && (req?.authData?.profile != 'admin' || req?.authData?.profile != 'manager'))
                 return res.status(200).json({status: 400, message: 'Permission Denied'});
             
             let filterObj = {};

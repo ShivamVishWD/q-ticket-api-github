@@ -26,6 +26,8 @@ const collectionFields = {
     logtime: "LogTime",
     activity: "Activity",
     comment: "Comment",
+    closeTime: "ClosedDateTime",
+    reopenTime: "ReopenDateTime",
     by: "By",
     name: "Name",
     createby: 'CreatedBy',
@@ -170,10 +172,20 @@ const ticketController = {
                 }
                 updateObj[collectionFields['attachments']] = attachments;
             }
+
+            if(req?.body?.status == 'Closed'){
+                updateObj[collectionFields['closeTime']] = new Date()
+                let totalDaysArr = Array(ticketDetail?.Logs).map(item => { return item?.LogTime }) || [];
+                updateObj[collectionFields['actual']] = calculateTotalDays(totalDaysArr);
+            }
+
+            if(req?.body?.status == 'Reopen')
+                updateObj[collectionFields['reopenTime']] = new Date()
+
             updateObj[collectionFields['updateby']] = updatedBy;
             const result = await ticketModel.findOneAndUpdate(filterObj,updateObj,{new: true}).exec();
             if(result?._id){
-                if(req.body.status && req.body.status != 'Pending to Close'){
+                if(req.body.status && req.body.status != 'Solved'){
                     if(getProject?.Customer != null)
                         sendEmail(getProject?.Customer?.Email , `Ticket Status Update: ${result?.TicketNumber} - ${result?.Status}` , '', ticketUpdateMailTemplate('status', ticketDetail?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                     if(getProject?.Manager != null)
@@ -186,7 +198,7 @@ const ticketController = {
                     if(getProject?.Manager != null)
                         sendEmail(getProject?.Manager?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                     if(getAssignee?.AssignTo != null)
-                        sendEmail(getProject?.AssignTo?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                        sendEmail(getAssignee?.AssignTo?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                 }
                 if(req.body.estimate){
                     if(getProject?.Customer != null)
@@ -194,7 +206,7 @@ const ticketController = {
                     if(getProject?.Manager != null)
                         sendEmail(getProject?.Manager?.Email , `Ticket Update: ETA for: ${result?.TicketNumber}` , '', ticketUpdateMailTemplate('eta', ticketDetail?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                 }
-                if(req.body.status && req.body.status == 'Pending to Close'){
+                if(req.body.status && req.body.status == 'Solved'){
                     if(getProject?.Customer != null)
                         sendEmail(getProject?.Customer?.Email , `Ticket Closure: Action Required` , '', ticketUpdateMailTemplate('status', ticketDetail?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                 }
@@ -249,6 +261,15 @@ const ticketController = {
             for(let key in req.body)
                 updateObj[collectionFields[key]] = req.body[key]
 
+            const getTicketDetail = await ticketModel.findOne(filterObj);
+
+            let totalDaysArr = getTicketDetail?.Logs.map(item => { return item?.LogTime }) || [];
+            console.log(totalDaysArr, 'totl day arr')
+            let newLog = String(req?.body?.logtime).split(' ');
+            totalDaysArr = [ ...totalDaysArr, ...newLog ];
+            let actualDateTime = calculateTotalDays(totalDaysArr) || null;
+            await ticketModel.findOneAndUpdate(filterObj, {ActualDateTime: actualDateTime})
+
             let logBy = {};
 
             let getUserDetail = await adminModel.findOne({_id: req?.body?.logby})
@@ -263,6 +284,7 @@ const ticketController = {
                 Email: getUserDetail?.Email
             }
             updateObj[collectionFields['logby']] = logBy;
+            
             const result = await ticketModel.findOneAndUpdate(filterObj,{$push: {Logs: updateObj}},{new: true}).exec();
             if(result?._id)
                 return res.status(200).json({status: 200, message: 'Log updated'});
@@ -306,6 +328,43 @@ const ticketController = {
         }
     }
 
+}
+
+function calculateTotalDays(timeStrings) {
+    let totalMinutes = 0;
+
+    // Define conversion factors
+    const conversionFactors = {
+        'w': 7 * 24 * 60, // 1 week = 7 days * 24 hours * 60 minutes
+        'd': 24 * 60,      // 1 day = 24 hours * 60 minutes
+        'h': 60,           // 1 hour = 60 minutes
+        'm': 1             // 1 minute
+    };
+
+    // Loop through each time string and sum up the total minutes
+    timeStrings.forEach(timeString => {
+        const value = parseInt(timeString);
+        const unit = timeString.charAt(timeString.length - 1);
+
+        if (!isNaN(value) && unit in conversionFactors) {
+            totalMinutes += value * conversionFactors[unit];
+        }
+    });
+
+    // Convert total minutes back to weeks, days, hours, and minutes
+    const weeks = Math.floor(totalMinutes / (7 * 24 * 60));
+    const days = Math.floor((totalMinutes % (7 * 24 * 60)) / (24 * 60));
+    const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+    const minutes = totalMinutes % 60;
+
+    // Construct the result string
+    const result = [];
+    if (weeks > 0) result.push(`${weeks}w`);
+    if (days > 0) result.push(`${days}d`);
+    if (hours > 0) result.push(`${hours}h`);
+    if (minutes > 0) result.push(`${minutes}m`);
+
+    return result.join(' ');
 }
 
 module.exports = ticketController;

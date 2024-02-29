@@ -300,7 +300,7 @@ async function showSingleTicket(ticketDetail) {
         document.getElementById('ticketpriority_detail').innerText=ticketDetail.TicketPriority;
         document.getElementById('createdat_detail').innerText=ticketDetail.createdAt;
         document.getElementById('updatedat_detail').innerText=ticketDetail.updatedAt;
-        document.getElementById('estimate_detail').innerText=ticketDetail.EstimateDateTime!= null ? ticketDetail.EstimateDateTime : document.getElementById('estimate_detail').style.display="none";
+        document.getElementById('estimate_detail').innerText=ticketDetail.EstimateDateTime!= null ? ticketDetail.EstimateDateTime : document.getElementById('estimate_detail').innerText = 'Not updated yet';
         document.getElementById('actualtime_detail').innerText=ticketDetail.ActualDateTime;
 
 
@@ -309,7 +309,7 @@ async function showSingleTicket(ticketDetail) {
 
         if(ticketDetail.Comments.length>0){
             let comment_sec=document.getElementById('user_coments_boxx');
-
+            comment_sec.innerHTML = '';
           
             for(i=0;i<ticketDetail.Comments.length;i++){
                 let parent_div=document.createElement('div');
@@ -340,6 +340,8 @@ async function showSingleTicket(ticketDetail) {
                 comment_sec.appendChild(parent_div)
     
             }       
+        }else{
+            document.getElementById('user_coments_boxx').innerHTML = '<br/><h5>No Comments Yet.</h5>'
         }
 
 
@@ -374,6 +376,7 @@ async function updateTime(){
             response = await response.json();
             console.log('response update est time : ',response)
             if(response.status == 200){
+                document.getElementById('update_estime_time_val').value = '';
                 alert('est time updated sucessfully');
                 // window.location.reload();
             }
@@ -447,7 +450,7 @@ async function updateLogTime(){
 
         try{
             const apiUrl = url + 'api/ticket/log?id='+ticket_id;
-            // console.log(apiUrl,'api url console')
+            console.log(apiUrl,'api url console')
             let response = await fetch(apiUrl, {
                 method: 'PATCH',
                 headers: {
@@ -459,6 +462,8 @@ async function updateLogTime(){
             response = await response.json();
             console.log('response update log time : ',response)
             if(response.status == 200){
+                document.getElementById('input_time_track_value').value = '';
+                document.getElementById('time_log_work_description').value = '';
                 alert('log time updated sucessfully');
                 // window.location.reload();
             }

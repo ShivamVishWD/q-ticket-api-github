@@ -1,6 +1,6 @@
 function customerOnboardMailTemplate(name, email, userid, password, projectName){
     return `<br/>
-    <b>Dear ${name},</b>
+    <b>Hi ${name},</b>
     <br/>
     <p>We're glad to onboard you on <b>Q-Ticket by Quadrafort</b>, where you can create and view your tickets regarding to <b>${projectName}</b></p>
     <p>You can access the portal by clicking the following link :<br/><a href="http://localhost:5001/">http://localhost:5001/</a></p>
@@ -18,7 +18,7 @@ function customerOnboardMailTemplate(name, email, userid, password, projectName)
 
 function teamMemberOnboardMailTamplate(name, email, userid, password){
     return `<br/>
-    <b>Dear ${name},</b>
+    <b>Hi ${name},</b>
     <br/>
     <p>We're glad to onboard you on <b>Q-Ticket by Quadrafort</b>, where you can view and log your tickets regarding to tickets.</p>
     <p>You can access the portal by clicking the following link :<br/><a href="http://localhost:5001/">http://localhost:5001/</a></p>
@@ -39,14 +39,14 @@ function ticketCreationMailTemplate(requestName, projectName, ticketNo, updateDa
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
         <tr>
             <td style="padding: 20px 0; text-align: center;">
-                <h1 style="margin: 0;">New Ticket Created</h1>
+                <h3 style="margin: 0;">New Ticket Created</h3>
             </td>
         </tr>
         <tr>
             <td style="padding: 20px 0;">
                 <p>Hi ${requestName},</p>
                 <p>Thank you for reaching out.</p>
-                <p>A new ticket has been created in the Q-Ticket System for project: <strong>$${projectName}</strong>. Our team is currently working on assigning it to an available developer. You will receive further updates via email.</p>
+                <p>A new ticket has been created in the Q-Ticket System for project: <strong>${projectName}</strong>. Our team is currently working on assigning it to an available developer. You will receive further updates via email.</p>
                 <p><strong>Ticket ID:</strong> ${ticketNo} | <strong>Date:</strong> ${updateDate}</p>
                 <p>If you have any further questions or concerns, please let us know.</p>
                 <p>Thanks,</p>
@@ -62,13 +62,13 @@ function ticketUpdateMailTemplate(updateType, assignToName, customerName, ticket
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="720">
             <tr>
                 <td style="padding: 20px 0; text-align: center;">
-                    <h1 style="margin: 0;">Ticket Assign to ${assignToName}</h1>
+                    <h3 style="margin: 0;">Ticket Assign to ${assignToName}</h3>
                 </td>
             </tr>
             <tr>
                 <td style="padding: 20px 0;">
                     <p>Hi ${customerName},</p>
-                    <p>Ticket No: ${ticketNo} has been updated and assigned to developer: $${assignToName}. The estimated time of arrival (ETA) will be updated shortly.</p>
+                    <p>Ticket No: ${ticketNo} has been updated and assigned to developer: ${assignToName}. The estimated time of arrival (ETA) will be updated shortly.</p>
                     <p>Thanks,</p>
                     <p>Q-Ticket by Quadrafort</p>
                 </td>
@@ -80,7 +80,7 @@ function ticketUpdateMailTemplate(updateType, assignToName, customerName, ticket
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="720">
             <tr>
                 <td style="padding: 20px 0; text-align: center;">
-                    <h1 style="margin: 0;">Ticket ETA has been Updated</h1>
+                    <h3 style="margin: 0;">Ticket ETA has been Updated</h3>
                 </td>
             </tr>
             <tr>
@@ -98,7 +98,7 @@ function ticketUpdateMailTemplate(updateType, assignToName, customerName, ticket
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="720">
             <tr>
                 <td style="padding: 20px 0; text-align: center;">
-                    <h1 style="margin: 0;">Ticket Status Update to ${currentStatus}</h1>
+                    <h3 style="margin: 0;">Ticket Status Update to ${currentStatus}</h3>
                 </td>
             </tr>
             <tr>
@@ -117,7 +117,7 @@ function ticketUpdateMailTemplate(updateType, assignToName, customerName, ticket
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="720">
             <tr>
                 <td style="padding: 20px 0; text-align: center;">
-                    <h1 style="margin: 0;">Ticket Status Update</h1>
+                    <h3 style="margin: 0;">Ticket Status Update</h3>
                 </td>
             </tr>
             <tr>
