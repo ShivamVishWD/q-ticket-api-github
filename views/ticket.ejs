@@ -306,6 +306,49 @@
         </div>
       </div>
     </div>
+
+
+
+
+      <!-- Modal 7 -->
+      <div class="modal fade" id="update_statuss_modal" tabindex="-1" aria-labelledby="exampleModalLabel_status_modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content" id="update_status">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel_status_modal">Update Status</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_update_status_modal"></button>
+            </div>
+            <div class="modal-body">
+              <!-- <input type="datetime-local" id="update_estime_time_val" name="update_estime_time_val" class="form-control"> -->
+
+              <select class="form-select" aria-label="status update" id="user_update_status">
+                <option value="Open">Open</option>
+                <option value="Ready To Dev">Ready To Dev</option>
+                <option value="Dev Start">Dev Start</option>
+                <option value="Dev Done">Dev Done</option>
+                <option value="In QA">In QA</option>
+                <option value="QA Done">QA Done</option>
+                <option value="Solved">Solved</option>
+                <option value="Closed">Closed</option>
+                <option value="Reopen">Reopen</option>
+
+
+
+
+
+
+
+
+
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_update_status_modal_btn">Close</button>
+              <button type="button" class="btn btn-primary" onclick="updateStatus();">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 
   <!-- Button trigger modal -->

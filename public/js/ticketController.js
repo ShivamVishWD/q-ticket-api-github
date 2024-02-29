@@ -198,6 +198,77 @@ document.getElementById('close_assign_modal_btn').addEventListener('click',() =>
 })
 
 // end here 
+
+// modal 7 handle
+
+document.getElementById('status_detail').addEventListener('click', ()=>{
+    document.getElementById('update_statuss_modal').classList.add('show');
+    document.getElementById('update_statuss_modal').style.display="block";
+
+})
+
+document.getElementById('close_update_status_modal').addEventListener('click',() =>{
+    document.getElementById('update_statuss_modal').classList.remove('show');
+    document.getElementById('update_statuss_modal').classList.add('fade');
+    document.getElementById('update_statuss_modal').style.display="none";
+
+
+})
+document.getElementById('close_update_status_modal_btn').addEventListener('click',() =>{
+    document.getElementById('update_statuss_modal').classList.remove('show');
+    document.getElementById('update_statuss_modal').classList.add('fade');
+    document.getElementById('update_statuss_modal').style.display="none";
+
+
+})
+
+
+// end here  
+
+
+async function updateStatus(){
+    let updated_Status=document.getElementById('user_update_status').value;
+    console.log(updated_Status,'user updates status');
+    let ticket_id;
+    ticket_id=current_ticket_id
+    if(updated_Status!=''){
+
+     let updated_status_obj={
+        status:updated_Status
+     }
+        try{
+            const apiUrl = url + 'api/ticket/update?id='+ticket_id;
+            // console.log(apiUrl,'api url console')
+            let response = await fetch(apiUrl, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+token
+                },
+                body: JSON.stringify(updated_status_obj)
+            })
+            response = await response.json();
+            console.log('response update status : ',response)
+            if(response.status == 200){
+                alert('Status updated sucessfully');
+                // window.location.reload();
+            }
+        }catch(error){
+            console.log('error : ',error)
+        }
+    }
+    else{
+        alert('Please Select Value');
+    }
+}
+
+
+
+
+
+
+
+
 async function updateAssignee(){
    let id_employee= document.getElementById('update_assigneee').value ;
    let ticket_id;
