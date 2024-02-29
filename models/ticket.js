@@ -48,9 +48,9 @@ const schema = new Schema({
     Logs: [
         new Schema({
             LogBy: {
-                type: mongoose.Schema.Types.ObjectId,
+                type: Object,
                 required: false,
-                ref: 'employee',
+                default: null
             },
             LogTime: {
                 type: String,
@@ -96,7 +96,7 @@ const schema = new Schema({
     Status: {
         type: String,
         required: true,
-        enum: ['New', 'Open', 'Ready To Dev', 'Assign To Dev', 'Dev Start', 'Dev Done', 'In QA', 'QA Done', 'Closed', 'Reopen'],
+        enum: ['New', 'Open', 'Ready To Dev', 'Assign To Dev', 'Dev Start', 'Dev Done', 'In QA', 'QA Done', 'Pending to Close', 'Closed', 'Reopen'],
         default: 'New'
     },
     CreatedBy: {

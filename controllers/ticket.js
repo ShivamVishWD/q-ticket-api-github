@@ -5,7 +5,7 @@ const adminModel = require('../models/admin')
 const employeeModel = require('../models/employee')
 const customerModel = require('../models/customer')
 const { sendEmail } = require('../helper/Mail');
-const { ticketCreationMailTemplate } = require('../templates/mail/sendMailTemplates');
+const { ticketCreationMailTemplate, ticketUpdateMailTemplate } = require('../templates/mail/sendMailTemplates');
 const moment = require('moment-timezone');
 
 const collectionFields = {
@@ -74,7 +74,7 @@ const ticketController = {
             if(mandatoryFields.length > 0)
                 return res.status(200).json({status: 400, message: 'Mandatory Fields Error', fieds: mandatoryFields})
 
-            const getProject = await projectModel.findOne({_id: req.body.project, IsActive: true, IsDeleted: false}).populate('Manager');
+            const getProject = await projectModel.findOne({_id: req.body.project, IsActive: true, IsDeleted: false}).populate('Manager').populate('Customer');
             if(getProject == null) return res.status(200).json({status: 400, message: 'Ticket not created because of Inactive project'});
 
             const getCountOfTickets = await ticketModel.find({Project: req.body.project}).countDocuments();
@@ -114,7 +114,9 @@ const ticketController = {
             const result = await new ticketModel(body).save();
             if(result?._id){
                 if(getProject?.Manager != null)
-                    sendEmail(getProject?.Manager?.Email, result?.TicketNumber + ' - ' + result?.Subject, '', ticketCreationMailTemplate(result?.TicketNumber, result?.Subject, result?.Description, '', result?.CreatedBy?.Name, moment(result?.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')))
+                    sendEmail(getProject?.Manager?.Email, 'New Ticket Created for '+getProject?.Name, '', ticketCreationMailTemplate(getProject?.Manager?.Name, getProject?.Name, result?.TicketNumber, moment(result?.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')))
+                if(getProject?.Customer != null)
+                    sendEmail(getProject?.Customer?.Email, 'New Ticket Created for '+getProject?.Name, '', ticketCreationMailTemplate(getProject?.Customer?.Name, getProject?.Name, result?.TicketNumber, moment(result?.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')))
                 return res.status(200).json({status: 200, message: 'Record created', data: result})
             }else
                 return res.status(200).json({status: 400, message: 'Record creation failed'})
@@ -143,6 +145,9 @@ const ticketController = {
             for(let key in req.body)
                 updateObj[collectionFields[key]] = req.body[key]
 
+            const ticketDetail = await ticketModel.findOne({$or: [{_id: req?.query?.id}, {TicketNumber: req?.query?.ticket}]}).populate('Project').populate('AssignTo');
+            const getProject = await projectModel.findOne({_id: ticketDetail?.Project?._id, IsActive: true, IsDeleted: false}).populate('Manager').populate('Customer');
+            
             let updatedBy = {};
 
             let getUserDetail = await adminModel.findOne({_id: req?.authData?._id})
@@ -167,9 +172,34 @@ const ticketController = {
             }
             updateObj[collectionFields['updateby']] = updatedBy;
             const result = await ticketModel.findOneAndUpdate(filterObj,updateObj,{new: true}).exec();
-            if(result?._id)
+            if(result?._id){
+                if(req.body.status && req.body.status != 'Pending to Close'){
+                    if(getProject?.Customer != null)
+                        sendEmail(getProject?.Customer?.Email , `Ticket Status Update: ${result?.TicketNumber} - ${result?.Status}` , '', ticketUpdateMailTemplate('status', ticketDetail?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                    if(getProject?.Manager != null)
+                        sendEmail(getProject?.Manager?.Email , `Ticket Status Update: ${result?.TicketNumber} - ${result?.Status}` , '', ticketUpdateMailTemplate('status', ticketDetail?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                }
+                if(req.body.assign){
+                    const getAssignee = await ticketModel.findOne({_id: result?._id}).populate('AssignTo');
+                    if(getProject?.Customer != null)
+                        sendEmail(getProject?.Customer?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                    if(getProject?.Manager != null)
+                        sendEmail(getProject?.Manager?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                    if(getAssignee?.AssignTo != null)
+                        sendEmail(getProject?.AssignTo?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                }
+                if(req.body.estimate){
+                    if(getProject?.Customer != null)
+                        sendEmail(getProject?.Customer?.Email , `Ticket Update: ETA for: ${result?.TicketNumber}` , '', ticketUpdateMailTemplate('eta', ticketDetail?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                    if(getProject?.Manager != null)
+                        sendEmail(getProject?.Manager?.Email , `Ticket Update: ETA for: ${result?.TicketNumber}` , '', ticketUpdateMailTemplate('eta', ticketDetail?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                }
+                if(req.body.status && req.body.status == 'Pending to Close'){
+                    if(getProject?.Customer != null)
+                        sendEmail(getProject?.Customer?.Email , `Ticket Closure: Action Required` , '', ticketUpdateMailTemplate('status', ticketDetail?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
+                }
                 return res.status(200).json({status: 200, message: 'Record updated'});
-            else
+            }else
                 return res.status(200).json({status: 400, message: 'Record updation failed'});
         }catch(error){
             return HandleError(error)
@@ -219,6 +249,20 @@ const ticketController = {
             for(let key in req.body)
                 updateObj[collectionFields[key]] = req.body[key]
 
+            let logBy = {};
+
+            let getUserDetail = await adminModel.findOne({_id: req?.body?.logby})
+            if(getUserDetail == null)
+                getUserDetail = await customerModel.findOne({_id: req?.body?.logby})
+            if(getUserDetail == null)
+                getUserDetail = await employeeModel.findOne({_id: req?.body?.logby})
+
+            logBy = {
+                Id: getUserDetail?._id,
+                Name: getUserDetail?.Name,
+                Email: getUserDetail?.Email
+            }
+            updateObj[collectionFields['logby']] = logBy;
             const result = await ticketModel.findOneAndUpdate(filterObj,{$push: {Logs: updateObj}},{new: true}).exec();
             if(result?._id)
                 return res.status(200).json({status: 200, message: 'Log updated'});
@@ -242,8 +286,6 @@ const ticketController = {
 
             for(let key in req.query)
                 filterObj[collectionFields[key]] = req.query[key]
-            
-            let commentBy = {};
 
             let getUserDetail = await adminModel.findOne({_id: req?.authData?._id})
             if(getUserDetail == null)
