@@ -153,7 +153,7 @@
                   <p id="createdat_detail"></p>
                 </div>
                 <div class="ticket_details_assign_details">
-                  <p>updated At</p>
+                  <p>Updated At</p>
                   <p id="updatedat_detail"></p>
                 </div>
                 <div class="ticket_details_assign_details">
@@ -164,6 +164,54 @@
                   <p>Actual Time</p>
                   <p id="actualtime_detail"></p>
                 </div>
+
+                <div class="collapse_container mt-3">
+                  <p>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      Log Time
+                    </button>
+                  </p>
+                  <div class="collapse collapse_body" id="collapseExample">
+                    <div class="card card-body">
+                     <div class="log_time_container">
+                      
+
+                      <div class="time_log_header">
+                        <h6>Time Tracking</h6>
+                      </div>
+                      <div class="time_track_input">
+                        <label for="input_time_track_value">Log time</label>
+                        <input type="text" placeholder="Enter time here" class="form-control" id="input_time_track_value">
+                      </div>
+                      <div class="time_log_format">
+                        <p>Use the format: 2w 4d 6h 45m</p>
+                        <ul>
+                          <li>w = weeks</li>
+                          <li>d = days</li>
+                          <li>h = hours</li>
+                          <li>m = minutes</li>
+                        </ul>
+                      </div>
+                      <div class="time_log_des">
+                        <label for="time_log_work_description" class="form-label">Work Description</label>
+                        <textarea class="form-control" id="time_log_work_description" rows="3"></textarea>
+                      </div>
+                      <div class="log_time_action_container">
+                        <button type="button" class="btn btn-primary" onclick="updateLogTime();">Log</button>
+                      </div>
+
+
+                     </div>
+                    </div>
+                  </div>
+                </div>
+               
+
+
+
+
+
+
               </div>
             </div>
           </div>
@@ -175,12 +223,12 @@
               <div class="add_comment_box">
                 <img src="/imgs/user.png" alt="user">
                 <div class="comment_container">
-                  <div class="input_container">
-                    <input class="form-control" type="text" placeholder="Comment Here" aria-label="default input example" id="comment_imput_value">
+                  <div class="input_container" id="input_container_id">
+                    <input class="form-control" type="text" placeholder="Comment Here" aria-label="default input example" id="comment_imput_value" onfocus="handleInputBox();">
                     </div>
-                    <div class="comment_action_box">
+                    <div class="comment_action_box" id="comment_action_box">
                       <button type="button" class="btn btn-primary" onclick="saveComment();">Save</button>
-                      <button type="button" class="btn btn-secondary">Cancel</button>
+                      <button type="button" class="btn btn-secondary" id="comment_close_btn">Cancel</button>
                     </div>
                 </div>
                 
@@ -218,13 +266,13 @@
     <!-- Modal 5 -->
 <div class="modal fade" id="assign_employee_modal" tabindex="-1" aria-labelledby="exampleModalLabel_assign_employee" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content" id="update_assignee">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel_assign_employee">Update Assignee</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_assign_modal"></button>
       </div>
       <div class="modal-body">
-        <select name="Select Assignee" id="update_assigneee" value="select">
+        <select name="Select Assignee" id="update_assigneee" value="select" class="form-select">
           
         </select>
       </div>
@@ -233,8 +281,31 @@
         <button type="button" class="btn btn-primary" onclick="updateAssignee();">Save changes</button>
       </div>
     </div>
+
   </div>
 </div>
+
+
+
+
+    <!-- Modal 6 -->
+    <div class="modal fade" id="update_Time_employee_modal" tabindex="-1" aria-labelledby="exampleModalLabel_Time_employee" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content" id="update_time">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel_Time_employee">Update Time</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_time_modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="datetime-local" id="update_estime_time_val" name="update_estime_time_val" class="form-control">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_time_modal_btn">Close</button>
+            <button type="button" class="btn btn-primary" onclick="updateTime();">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Button trigger modal -->

@@ -136,6 +136,7 @@ document.getElementById('assigner_detail').addEventListener('click', ()=>{
     document.getElementById('assign_employee_modal').style.display="block";
 
     let select=document.getElementById('update_assigneee');
+    select.innerHTML='';
 
     for(i=0;i<employee_list.data.length;i++){
         let option_tag=document.createElement('option');
@@ -148,6 +149,39 @@ document.getElementById('assigner_detail').addEventListener('click', ()=>{
 
 
 })
+document.getElementById('estimate_detail').addEventListener('click', ()=>{
+    document.getElementById('update_Time_employee_modal').classList.add('show');
+    document.getElementById('update_Time_employee_modal').style.display="block";
+
+ 
+
+  
+
+
+})
+// modal 6 handle
+
+document.getElementById('close_time_modal').addEventListener('click',() =>{
+    document.getElementById('update_Time_employee_modal').classList.remove('show');
+    document.getElementById('update_Time_employee_modal').classList.add('fade');
+    document.getElementById('update_Time_employee_modal').style.display="none";
+
+
+})
+document.getElementById('close_time_modal_btn').addEventListener('click',() =>{
+    document.getElementById('update_Time_employee_modal').classList.remove('show');
+    document.getElementById('update_Time_employee_modal').classList.add('fade');
+    document.getElementById('update_Time_employee_modal').style.display="none";
+
+
+})
+
+
+
+// end here
+
+// modal 5 handle 
+
 document.getElementById('close_assign_modal').addEventListener('click',() =>{
     document.getElementById('assign_employee_modal').classList.remove('show');
     document.getElementById('assign_employee_modal').classList.add('fade');
@@ -162,6 +196,8 @@ document.getElementById('close_assign_modal_btn').addEventListener('click',() =>
 
 
 })
+
+// end here 
 async function updateAssignee(){
    let id_employee= document.getElementById('update_assigneee').value ;
    let ticket_id;
@@ -235,6 +271,19 @@ async function saveComment(){
     }
 }
 
+function handleInputBox(){
+    document.getElementById('comment_imput_value').style.border="none";
+    document.getElementById('input_container_id').style.border="1px solid rgba(128, 128, 128, 0.374)";
+    document.getElementById('input_container_id').style.padding="20px 10px";
+    document.getElementById('comment_action_box').style.display="block";
+}
+
+document.getElementById('comment_close_btn').addEventListener('click',()=>{
+    document.getElementById('comment_imput_value').style.border="1px solid rgba(128, 128, 128, 0.374)";
+    document.getElementById('input_container_id').style.border="none";
+    document.getElementById('input_container_id').style.padding="0";
+    document.getElementById('comment_action_box').style.display="none";
+})
 
 let current_ticket_id;
 async function showSingleTicket(ticketDetail) {
@@ -251,7 +300,7 @@ async function showSingleTicket(ticketDetail) {
         document.getElementById('ticketpriority_detail').innerText=ticketDetail.TicketPriority;
         document.getElementById('createdat_detail').innerText=ticketDetail.createdAt;
         document.getElementById('updatedat_detail').innerText=ticketDetail.updatedAt;
-        document.getElementById('estimate_detail').innerText=ticketDetail.EstimateDateTime;
+        document.getElementById('estimate_detail').innerText=ticketDetail.EstimateDateTime!= null ? ticketDetail.EstimateDateTime : document.getElementById('estimate_detail').style.display="none";
         document.getElementById('actualtime_detail').innerText=ticketDetail.ActualDateTime;
 
 
@@ -301,6 +350,42 @@ async function showSingleTicket(ticketDetail) {
     }
 }
 
+async function updateTime(){
+    let update_est_time = document.getElementById('update_estime_time_val').value
+    console.log(update_est_time,'update time value');
+    let ticket_id;
+    ticket_id=current_ticket_id
+    if(update_est_time!=""){
+        console.log('entrred time',update_est_time );
+        let update_time_obj={
+            estimate:update_est_time
+        }
+        try{
+            const apiUrl = url + 'api/ticket/update?id='+ticket_id;
+            // console.log(apiUrl,'api url console')
+            let response = await fetch(apiUrl, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+token
+                },
+                body: JSON.stringify(update_time_obj)
+            })
+            response = await response.json();
+            console.log('response update est time : ',response)
+            if(response.status == 200){
+                alert('est time updated sucessfully');
+                // window.location.reload();
+            }
+        }catch(error){
+            console.log('error : ',error)
+        }
+
+    }else{
+      console.log(  'Not entered time',update_est_time)
+    }
+}
+
 function getTypeBadge(badgeCode) {
     if (badgeCode == 'Story'){
         return `<span class="badge text-bg-success" title="Story">Story</span>`;
@@ -340,5 +425,50 @@ async function createTicket(formData){
         }
     }catch(error){
         console.log('error : ',error)
+    }
+}
+
+async function updateLogTime(){
+    let updated_log_time= document.getElementById('input_time_track_value').value;
+    let work_des=document.getElementById('time_log_work_description').value;
+    let ticket_id;
+    ticket_id=current_ticket_id
+    if(updated_log_time!="" && work_des!=""){
+        console.log(updated_log_time,'log time');
+        console.log(work_des,'work description');
+
+        console.log(userid,'userid');
+
+        let log_time_obj={
+            logby:userid,
+            activity:work_des,
+            logtime:updated_log_time
+        }
+
+        try{
+            const apiUrl = url + 'api/ticket/log?id='+ticket_id;
+            // console.log(apiUrl,'api url console')
+            let response = await fetch(apiUrl, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+token
+                },
+                body: JSON.stringify(log_time_obj)
+            })
+            response = await response.json();
+            console.log('response update log time : ',response)
+            if(response.status == 200){
+                alert('log time updated sucessfully');
+                // window.location.reload();
+            }
+        }catch(error){
+            console.log('error : ',error)
+        }
+
+
+    }
+    else{
+        alert('please enter valid values');
     }
 }

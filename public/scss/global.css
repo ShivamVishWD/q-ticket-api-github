@@ -363,6 +363,22 @@
   width: 50%;
   font-size: small;
 }
+.ticket_des_modal .ticket_des_body .ticket_details_bar .ticket_details_body_bar .ticket_details_assign_details #assigner_detail {
+  color: blue;
+  font-weight: 500;
+  -webkit-text-decoration: 1px solid underline;
+          text-decoration: 1px solid underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.ticket_des_modal .ticket_des_body .ticket_details_bar .ticket_details_body_bar .ticket_details_assign_details #estimate_detail {
+  color: blue;
+  font-weight: 500;
+  -webkit-text-decoration: 1px solid underline;
+          text-decoration: 1px solid underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
 .ticket_des_modal .ticket_comment_sec {
   width: 70%;
   border-right: 1px solid rgba(128, 128, 128, 0.374);
@@ -392,12 +408,11 @@
   margin-left: 2%;
 }
 .ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box .comment_container .input_container {
-  border: 1px solid rgba(128, 128, 128, 0.374);
   width: 100%;
-  padding: 20px 10px;
 }
 .ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box .comment_container .input_container input {
   border: none;
+  border: 1px solid rgba(128, 128, 128, 0.374);
 }
 .ticket_des_modal .ticket_comment_sec .comment_sec_body .add_comment_box .comment_container .input_container input:focus {
   border: none;
@@ -430,6 +445,57 @@
   font-size: small;
 }
 .ticket_des_modal .ticket_comment_sec .comment_action_box {
+  padding: 10px 0px;
+  display: none;
+}
+
+.collapse_container {
+  position: relative;
+}
+.collapse_container p button {
+  width: 100%;
+}
+.collapse_container .collapse_body {
+  position: absolute;
+  top: 150%;
+  width: 100%;
+}
+.collapse_container .collapse_body .log_time_container .time_log_header {
+  padding: 10px 0px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.374);
+}
+.collapse_container .collapse_body .log_time_container .time_log_header h6 {
+  font-weight: 500;
+}
+.collapse_container .collapse_body .log_time_container .time_track_input {
+  padding: 10px 0px;
+}
+.collapse_container .collapse_body .log_time_container .time_track_input label {
+  margin-bottom: 10px;
+  font-size: small;
+}
+.collapse_container .collapse_body .log_time_container .time_track_input input {
+  width: 100%;
+}
+.collapse_container .collapse_body .log_time_container .time_log_format {
+  padding: 10px 0px;
+}
+.collapse_container .collapse_body .log_time_container .time_log_format p {
+  margin-bottom: 10px;
+}
+.collapse_container .collapse_body .log_time_container .time_log_format ul li {
+  list-style: circle;
+}
+.collapse_container .collapse_body .log_time_container .time_log_des {
+  margin-bottom: 20px;
+}
+.collapse_container .collapse_body .log_time_container .time_log_des label {
+  font-size: small;
+}
+.collapse_container .collapse_body .log_time_container .time_log_des textarea {
+  width: 100%;
+}
+.collapse_container .collapse_body .log_time_container .log_time_action_container {
   padding: 10px 0px;
 }
 
