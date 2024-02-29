@@ -40,7 +40,7 @@ async function sendEmail( userMail, subject, text, html) {
       }
 }
 
-  function sendEmailWithAttechment( userMail, subject, text, html, attachmentName) {
+  function sendEmailWithAttachment( userMail, subject, text, html, attachmentName) {
     
     let mailOptions = {
       from: "noreply@Quadrafort.com",
@@ -71,4 +71,4 @@ async function sendEmail( userMail, subject, text, html) {
   }
   
 
-  module.exports = {sendEmail,sendEmailWithAttechment};
+  module.exports = {sendEmail,sendEmailWithAttachment};
