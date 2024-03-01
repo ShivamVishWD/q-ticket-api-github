@@ -15,6 +15,7 @@ ClassicEditor
             console.error('Error initializing CKEditor 5:', error);
         });
 */
+let baseUrlForAttachments = null;
 async function ticketOfProject(project_id){
     try{
         // console.log('project id : ',project_id)
@@ -36,6 +37,7 @@ async function ticketOfProject(project_id){
             });
             response = await response.json();
             console.log('response : ',response)
+            baseUrlForAttachments = response.baseUrl;
             let tableContainer=document.getElementById('ticket_table')
             tableContainer.innerHTML = '';
             let table=document.createElement('table');
@@ -96,6 +98,7 @@ async function ticketOfProject(project_id){
                 }
             }
             else{
+                baseUrlForAttachments = null;
                 let tr1=document.createElement('tr');
                 tr1.setAttribute("align", "center");
                 let td1=document.createElement('td');
@@ -377,7 +380,15 @@ async function showSingleTicket(ticketDetail) {
 
         current_ticket_id=ticketDetail._id
 
-
+        if(ticketDetail.Attachments.length > 0){
+            let templateAttach = '';
+            for(let imageUrl of ticketDetail.Attachments){
+                templateAttach += `<img src='${baseUrlForAttachments}/${imageUrl}' style="height: 300px; aspect-ratio: 1/1; display: block;"/>`
+            }
+            document.getElementById('ticket_attachments').innerHTML = templateAttach;
+        }else{
+            document.getElementById('ticket_attachments').innerHTML = '';
+        }
         if(ticketDetail.Comments.length>0){
             let comment_sec=document.getElementById('user_coments_boxx');
             comment_sec.innerHTML = '';
