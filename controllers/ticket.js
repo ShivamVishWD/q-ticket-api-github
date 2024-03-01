@@ -4,7 +4,7 @@ const projectModel = require('../models/project');
 const adminModel = require('../models/admin')
 const employeeModel = require('../models/employee')
 const customerModel = require('../models/customer')
-const { sendEmail } = require('../helper/Mail');
+const { sendEmail } = require('../service/Mail');
 const { ticketCreationMailTemplate, ticketUpdateMailTemplate } = require('../templates/mail/sendMailTemplates');
 const moment = require('moment-timezone');
 

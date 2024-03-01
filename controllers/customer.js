@@ -4,7 +4,7 @@ const customerModel = require("../models/customer");
 const projectModel = require('../models/project');
 const bcrypt = require("bcrypt");
 const { customerOnboardMailTemplate } = require("../templates/mail/sendMailTemplates");
-const { sendEmail } = require("../helper/Mail");
+const { sendEmail } = require("../service/Mail");
 
 const collectionFields = {
   id: "_id",
