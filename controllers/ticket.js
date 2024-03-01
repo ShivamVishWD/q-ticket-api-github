@@ -53,7 +53,13 @@ const ticketController = {
             
             const result = await ticketModel.find(filterObj).populate('Project').populate('AssignTo').populate("Logs.LogBy");
             // const baseUrl = req.protocol + '://' + req.headers.host + '/';
-            const baseUrl = 'https://' + req.headers.host + '/';
+            let baseUrl = 'https://' + req.headers.host + '/';
+            if(!String(req.headers.host).includes('localhost')){
+                baseUrl = 'https://' + req.headers.host + '/';
+            }else{
+                baseUrl = 'http://' + req.headers.host + '/';
+            }
+            
             return res.status(200).json({status: 200, message: 'Records Fetched', baseUrl, data: result});
         }catch(error){
             console.log('error : ',error)
