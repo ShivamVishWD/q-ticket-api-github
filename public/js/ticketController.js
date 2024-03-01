@@ -383,7 +383,7 @@ async function showSingleTicket(ticketDetail) {
         if(ticketDetail.Attachments.length > 0){
             let templateAttach = '';
             for(let imageUrl of ticketDetail.Attachments){
-                templateAttach += `<img src='${baseUrlForAttachments}/${imageUrl}' style="height: 300px; aspect-ratio: 1/1; display: block;"/>`
+                templateAttach += `<img src='${baseUrlForAttachments}${imageUrl}' style="height: 300px; aspect-ratio: 1/1; display: block;"/>`
             }
             document.getElementById('ticket_attachments').innerHTML = templateAttach;
         }else{
