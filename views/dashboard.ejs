@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,51 +8,83 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery.min.js"></script>
     <link href="/scss/global.css" rel="stylesheet" type="text/css">
-    <title><%= pagetitle %></title>
+    <title>
+        <%= pagetitle %>
+    </title>
 </head>
+
 <body>
     <div class="container-fluid admin_dashboard">
         <%- include('partials/sidebar.ejs') %>
-        <div class="dashboard_view container-fluid">
-            <%- include('partials/topbar.ejs') %>
-            <div class="dashboard_stats container-fluid">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="dashboard_stats_cards">
-                            <h4>Projects</h4>
-                            <h3>Total</h3>
-                            <h3 id="total-project">0</h3>
-                            <a href="/admin/projects">Know more</a>
+            <div class="dashboard_view container-fluid">
+                <%- include('partials/topbar.ejs') %>
+                    <div class="dashboard_stats container-fluid">
+                        <div class="dash_partial_mid">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="dashboard_stats_cards">
+                                        <h4>Projects</h4>
+                                        <h3>Total</h3>
+                                        <h3 id="total-project">0</h3>
+                                        <a href="/admin/projects">Know more</a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="dashboard_stats_cards">
+                                        <h4>Team</h4>
+                                        <h3>Total</h3>
+                                        <h3 id="total-team">0</h3>
+                                        <a href="/admin/employees">Know more</a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="dashboard_stats_cards">
+                                        <h4>Customer</h4>
+                                        <h3>Total</h3>
+                                        <h3 id="total-customer">0</h3>
+                                        <a href="/admin/customers">Know more</a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="dashboard_stats_cards">
+                                        <h4>Tickets</h4>
+                                        <h3>Total</h3>
+                                        <h3 id="total-ticket">0</h3>
+                                        <a href="/admin/tickets">Know more</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data_set_charts_full_graph">
+                                <div class="charts_pie_container">
+                                    <canvas id="line_chart" class="line_charts_s"></canvas>
+                                </div>
+                                
+                                <div class="charts_pie_container">
+                                    <canvas id="myChart" class="line_charts_s"></canvas>
+                                </div>
+                            
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="dashboard_stats_cards">
-                            <h4>Team</h4>
-                            <h3>Total</h3>
-                            <h3 id="total-team">0</h3>
-                            <a href="/admin/employees">Know more</a>
+                       <div class="dash_partial_corner">
+                        <div class="data_set_charts">
+                          
+                            <div class="charts_pie_container">
+                                <canvas id="pie_chart"></canvas>
+                            </div>
+                            <div class="charts_pie_container mb-0">
+                                <canvas id="dougnet_chart"></canvas>
+                            </div>
                         </div>
+                       
+                       </div>
+                      
+
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="dashboard_stats_cards">
-                            <h4>Customer</h4>
-                            <h3>Total</h3>
-                            <h3 id="total-customer">0</h3>
-                            <a href="/admin/customers">Know more</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="dashboard_stats_cards">
-                            <h4>Tickets</h4>
-                            <h3>Total</h3>
-                            <h3 id="total-ticket">0</h3>
-                            <a href="/admin/tickets">Know more</a>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
     </div>
+
+
+    
     <script type="text/javascript">
         const Base_url = "<%= url %>";
         const token = "<%= usertoken %>";
@@ -60,5 +93,127 @@
     </script>
     <script src="/js/validation.js"></script>
     <script src="/js/commonController.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+        const ctx_pie = document.getElementById('pie_chart');
+        const ctx_dougnet =document.getElementById('dougnet_chart');
+        const ctx_line = document.getElementById('line_chart');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Open', 'Ready To Dev', 'Dev Start', 'Dev Done', 'In QA', 'QA Done', 'Solved', 'Closed', 'Reopen'],
+                datasets: [{
+                    label: '# of Tickets',
+                    data: [12, 19, 3, 5, 2, 3, 7, 4, 8],
+                    borderWidth: 1,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(220, 103, 207, 0.2)',
+                        'rgba(253, 102, 285, 0.2)',
+                        'rgba(201, 203, 227, 0.2)'
+                    ],
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+
+
+
+        new Chart(ctx_pie, {
+            type: 'doughnut',
+
+
+
+            data: {
+                labels: [
+                    'New',
+                    'Old',
+                    'Completed',
+                    'In Process'
+                ],
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [300, 50, 100,60],
+                    backgroundColor: [
+                        'rgb(140,92,175)',
+                        'rgb(0, 128, 128)',
+                        'rgb(70, 130, 180)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            }
+        });
+
+
+
+
+        new Chart(ctx_dougnet, {
+            type: 'pie',
+
+
+
+            data: {
+                labels: [
+                    'Red',
+                    'Blue',
+                    'Yellow'
+                ],
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [300, 50, 100],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            }
+        });
+
+
+        // const labels = Utils.months({count: 7});
+
+        new Chart(ctx_line, {
+            type: 'line',
+
+
+
+            data: {
+                labels: [
+                    'Red',
+                    'Blue',
+                    'Yellow',
+                    'one',
+                    'two',
+                    'three',
+                    'four,'
+                ],
+                datasets: [{
+                    label: 'My First Dataset',
+                    data:  [65, 59, 80, 81, 56, 55, 40],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            }
+        });
+    </script>
 </body>
+
 </html>

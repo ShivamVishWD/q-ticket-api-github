@@ -160,7 +160,7 @@
   align-items: center;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 .admin_dashboard .dashboard_view .dashborad_header .notification_bar img {
   height: 30px;
@@ -180,19 +180,23 @@
 }
 .admin_dashboard .dashboard_view .dashboard_stats {
   padding: 30px 0px;
+  display: flex;
 }
-.admin_dashboard .dashboard_view .dashboard_stats .dashboard_stats_cards {
+.admin_dashboard .dashboard_view .dashboard_stats .dash_partial_mid {
+  width: 70%;
+}
+.admin_dashboard .dashboard_view .dashboard_stats .dash_partial_mid .dashboard_stats_cards {
   padding: 20px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
   margin: 12px 7px;
-  border-radius: 5px;
+  border-radius: 15px;
 }
-.admin_dashboard .dashboard_view .dashboard_stats .dashboard_stats_cards h3 {
+.admin_dashboard .dashboard_view .dashboard_stats .dash_partial_mid .dashboard_stats_cards h3 {
   color: black;
   font-weight: 500;
   font-size: larger;
 }
-.admin_dashboard .dashboard_view .dashboard_stats .dashboard_stats_cards h4 {
+.admin_dashboard .dashboard_view .dashboard_stats .dash_partial_mid .dashboard_stats_cards h4 {
   color: rgba(177, 171, 171, 0.7);
   font-weight: 300;
   font-size: larger;
@@ -200,11 +204,11 @@
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
   padding-bottom: 10px;
 }
-.admin_dashboard .dashboard_view .dashboard_stats .dashboard_stats_cards span {
+.admin_dashboard .dashboard_view .dashboard_stats .dash_partial_mid .dashboard_stats_cards span {
   color: rgba(177, 171, 171, 0.7);
   display: block;
 }
-.admin_dashboard .dashboard_view .dashboard_stats .dashboard_stats_cards button {
+.admin_dashboard .dashboard_view .dashboard_stats .dash_partial_mid .dashboard_stats_cards button {
   background-color: #FF698D;
   color: white;
   padding: 10px 20px;
@@ -213,6 +217,16 @@
   border: none;
   display: block;
   margin: auto;
+}
+.admin_dashboard .dashboard_view .dashboard_stats .dash_partial_mid .dashboard_stats_cards a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.54);
+}
+.admin_dashboard .dashboard_view .dashboard_stats .dash_partial_corner {
+  width: 30%;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 15px;
 }
 .admin_dashboard .dashboard_view .add_btn_container {
   position: relative;
@@ -344,6 +358,7 @@
 }
 .ticket_des_modal .ticket_des_body .ticket_details_bar {
   width: 30%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 .ticket_des_modal .ticket_des_body .ticket_details_bar .ticket_det_bar_header {
   padding: 10px;
@@ -393,6 +408,7 @@
   min-height: 50vh;
   padding: 10px;
   border-top: 1px solid rgba(128, 128, 128, 0.374);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 .ticket_des_modal .ticket_comment_sec .commetns_header {
   padding: 10px 0px;
@@ -509,4 +525,73 @@
 
 td {
   text-transform: capitalize !important;
+}
+
+.show {
+  background: rgba(0, 0, 0, 0.29);
+}
+
+.theme-btn {
+  background-color: #FF698D !important;
+  color: white !important;
+  outline: none !important;
+  border: none !important;
+  border-radius: 5px !important;
+  padding: 7px 25px !important;
+}
+
+.charts_container {
+  width: 100%;
+  height: 50vh;
+}
+
+.data_set_charts {
+  width: 100%;
+}
+.data_set_charts .charts_pie_container {
+  padding: 0px 20px;
+  width: 100%;
+  height: 50vh;
+  margin-bottom: 50px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.374);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+.data_set_charts .charts_pie_container canvas {
+  margin: auto;
+  padding: 10px;
+  width: 100%;
+}
+.data_set_charts .charts_pie_container .line_charts_s {
+  margin: 0;
+}
+
+.ticket_modal_header {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+.ticket_modal_header .ticket_des_header h4 {
+  color: #FF698D;
+}
+.ticket_modal_header .ticket_des_header h5 {
+  color: #FF698D;
+}
+
+.data_set_charts_full_graph {
+  width: 100%;
+  padding: 0px 20px;
+  min-height: 50vh;
+}
+.data_set_charts_full_graph .charts_pie_container {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  margin: 30px 0px;
+  padding: 10px;
+}
+.data_set_charts_full_graph .line_charts_s {
+  margin: 0;
+}
+
+.badge {
+  width: 70%;
+  display: block;
 }/*# sourceMappingURL=global.css.map */

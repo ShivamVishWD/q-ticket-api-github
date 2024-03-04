@@ -22,7 +22,7 @@
         <%- include('partials/topbar.ejs') %>
           <div class="add_btn_container">
             <% if(profile=='admin' || profile=='Admin' ) { %>
-              <select name="project" class="form-control project-select" id="project-option"
+              <select name="project" class="form-select project-select" id="project-option"
                 onchange="ticketOfProject()"></select>
               <% } %>
                 <% if(profile !='employee' && profile !='Employee' ) { %>
@@ -49,7 +49,7 @@
         <div class="modal-body">
           <form id="ticket" class="modal_to_add">
             <div class="form-group mb-3">
-              <select name="project" class="form-control project-select" id="project-option">
+              <select name="project" class="form-select project-select" id="project-option">
                 <option value="">select project</option>
               </select>
             </div>
@@ -97,7 +97,7 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
-          <button type="button" class="btn btn-primary" onclick="handleForm('ticket');">
+          <button type="button" class="btn btn-primary theme-btn" onclick="handleForm('ticket');">
             Create Ticket
           </button>
         </div>
@@ -110,12 +110,12 @@
     aria-labelledby="ticket_detail_modal_label" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
-        <div class="modal-header ">
+        <div class="modal-header ticket_modal_header">
           <div class="ticket_des_header">
             <h5 class="modal-title" id="ticket_no"></h5>
             <h5 class="modal-title" id="ticket_subject"></h5>
           </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close ticket_header_close_btn" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-0">
           <div class="ticket_des_body">
@@ -168,7 +168,7 @@
 
                 <div class="collapse_container mt-3">
                   <p>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button class="btn btn-primary theme-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                       Log Time
                     </button>
                   </p>
@@ -198,7 +198,7 @@
                         <textarea class="form-control" id="time_log_work_description" rows="3"></textarea>
                       </div>
                       <div class="log_time_action_container">
-                        <button type="button" class="btn btn-primary" onclick="updateLogTime();">Log</button>
+                        <button type="button" class="btn btn-primary theme-btn" onclick="updateLogTime();">Log</button>
                       </div>
 
 
@@ -228,7 +228,7 @@
                     <input class="form-control" type="text" placeholder="Comment Here" aria-label="default input example" id="comment_imput_value" onfocus="handleInputBox();">
                     </div>
                     <div class="comment_action_box" id="comment_action_box">
-                      <button type="button" class="btn btn-primary" onclick="saveComment();">Save</button>
+                      <button type="button" class="btn btn-primary theme-btn" onclick="saveComment();">Save</button>
                       <button type="button" class="btn btn-secondary" id="comment_close_btn">Cancel</button>
                     </div>
                 </div>
@@ -255,7 +255,7 @@
         </div>
         <!-- <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="updateEmpAssign()">Save changes</button>
+          <button type="button" class="btn btn-primary theme-btn theme-btn" onclick="updateEmpAssign()">Save changes</button>
         </div> -->
       </div>
     </div>
@@ -279,7 +279,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_assign_modal_btn">Close</button>
-        <button type="button" class="btn btn-primary" onclick="updateAssignee();">Save changes</button>
+        <button type="button" class="btn btn-primary theme-btn" onclick="updateAssignee();">Save changes</button>
       </div>
     </div>
 
@@ -302,7 +302,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_time_modal_btn">Close</button>
-            <button type="button" class="btn btn-primary" onclick="updateTime();">Save changes</button>
+            <button type="button" class="btn btn-primary theme-btn" onclick="updateTime();">Save changes</button>
           </div>
         </div>
       </div>
@@ -345,7 +345,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_update_status_modal_btn">Close</button>
-              <button type="button" class="btn btn-primary" onclick="updateStatus();">Save changes</button>
+              <button type="button" class="btn btn-primary theme-btn" onclick="updateStatus();">Save changes</button>
             </div>
           </div>
         </div>
@@ -353,7 +353,7 @@
   </div>
 
   <!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assign_employee_modal">
+<!-- <button type="button" class="btn btn-primary theme-btn theme-btn" data-bs-toggle="modal" data-bs-target="#assign_employee_modal">
   Launch demo modal
 </button> -->
 
