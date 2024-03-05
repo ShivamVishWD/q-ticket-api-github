@@ -527,6 +527,10 @@ td {
   text-transform: capitalize !important;
 }
 
+.emp_mail_td {
+  text-transform: none !important;
+}
+
 .show {
   background: rgba(0, 0, 0, 0.29);
 }

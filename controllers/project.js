@@ -156,7 +156,7 @@ const projectController = {
 
             // Filter employees for remove project from them which are unselected
             if(employeeOfProject.length > 0){
-                for(let item of employeeOfProject){
+                for(let item of employeeOfProject){3
                     if(!Array(req.body.members).includes(item._id))
                         employeesToBeRemoveFromProject.push(item._id)
                 }

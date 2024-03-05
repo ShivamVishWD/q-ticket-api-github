@@ -44,6 +44,7 @@ async function getCustomers(){
                     td1.innerHTML=rec_data.data[i].Name
                     tr1.appendChild(td1)
                     td2.innerText=rec_data.data[i].Email
+                    td2.setAttribute("class","emp_mail_td")
                     tr1.appendChild(td2)
 
                     td3.innerText=rec_data.data[i].Project.Name
