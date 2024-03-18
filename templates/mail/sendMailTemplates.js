@@ -3,7 +3,7 @@ function customerOnboardMailTemplate(name, email, userid, password, projectName)
     <b>Hi ${name},</b>
     <br/>
     <p>We're glad to onboard you on <b>Q-Ticket by Quadrafort</b>, where you can create and view your tickets regarding to <b>${projectName}</b></p>
-    <p>You can access the portal by clicking the following link :<br/><a href="http://localhost:5001/">http://localhost:5001/</a></p>
+    <p>You can access the portal by clicking the following link :<br/><a href="https://quadrafort-ticket-frontend.vercel.app/login">https://quadrafort-ticket-frontend.vercel.app/login</a></p>
     <p>For you benefit we've created a login credential and you can access the portal by below credential :</p>
     <b>User ID : ${userid || email}</b>
     <br/>
@@ -21,7 +21,7 @@ function teamMemberOnboardMailTamplate(name, email, userid, password){
     <b>Hi ${name},</b>
     <br/>
     <p>We're glad to onboard you on <b>Q-Ticket by Quadrafort</b>, where you can view and log your tickets regarding to tickets.</p>
-    <p>You can access the portal by clicking the following link :<br/><a href="http://localhost:5001/">http://localhost:5001/</a></p>
+    <p>You can access the portal by clicking the following link :<br/><a href="https://q-ticket-api-github.onrender.com/">https://q-ticket-api-github.onrender.com/</a></p>
     <p>For you benefit we've created a login credential and you can access the portal by below credential :</p>
     <b>User ID : ${userid || email}</b>
     <br/>
