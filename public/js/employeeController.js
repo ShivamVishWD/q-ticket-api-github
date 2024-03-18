@@ -28,8 +28,11 @@ async function getEmployees(projectId){
             thead.innerText='Name'
             let thead2=document.createElement('th');
             thead2.innerText='Email'
+            let thead3=document.createElement('th');
+            thead3.innerText='Role'
             tr.appendChild(thead);
             tr.appendChild(thead2);
+            tr.appendChild(thead3);
             table.appendChild(tr);
             console.log(response.data.length)
             if(rec_data.data.length>0){
@@ -38,11 +41,14 @@ async function getEmployees(projectId){
                     let tr1=document.createElement('tr')
                     let td1=document.createElement('td')
                     let td2=document.createElement('td')
+                    let td3=document.createElement('td')
                     td1.innerHTML=rec_data.data[i].Name
                     tr1.appendChild(td1)
                     td2.innerText=rec_data.data[i].Email
                     td2.setAttribute("class","emp_mail_td")
                     tr1.appendChild(td2)
+                    td3.innerText=rec_data.data[i].Role == 'Manager' ? 'Reporting Manager' : rec_data.data[i].Role;
+                    tr1.appendChild(td3)
                     table.appendChild(tr1)
                 }
             }
