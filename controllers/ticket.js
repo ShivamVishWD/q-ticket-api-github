@@ -122,9 +122,9 @@ const ticketController = {
 
             const result = await new ticketModel(body).save();
             if(result?._id){
-                if(getProject?.Manager != null)
+                if(getProject?.Manager != null && process.env.ENVIRONMENT != 'DEV')
                     sendEmail(getProject?.Manager?.Email, 'New Ticket Created for '+getProject?.Name, '', ticketCreationMailTemplate(getProject?.Manager?.Name, getProject?.Name, result?.TicketNumber, moment(result?.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')))
-                if(getProject?.Customer != null)
+                if(getProject?.Customer != null && process.env.ENVIRONMENT != 'DEV')
                     sendEmail(getProject?.Customer?.Email, 'New Ticket Created for '+getProject?.Name, '', ticketCreationMailTemplate(getProject?.Customer?.Name, getProject?.Name, result?.TicketNumber, moment(result?.createdAt).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')))
                 return res.status(200).json({status: 200, message: 'Record created', data: result})
             }else
@@ -193,28 +193,28 @@ const ticketController = {
             const result = await ticketModel.findOneAndUpdate(filterObj,updateObj,{new: true}).exec();
             if(result?._id){
                 if(req.body.status && req.body.status != 'Solved'){
-                    if(getProject?.Customer != null)
+                    if(getProject?.Customer != null && process.env.ENVIRONMENT != 'DEV')
                         sendEmail(getProject?.Customer?.Email , `Ticket Status Update: ${result?.TicketNumber} - ${result?.Status}` , '', ticketUpdateMailTemplate('status', ticketDetail?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
-                    if(getProject?.Manager != null)
+                    if(getProject?.Manager != null && process.env.ENVIRONMENT != 'DEV')
                         sendEmail(getProject?.Manager?.Email , `Ticket Status Update: ${result?.TicketNumber} - ${result?.Status}` , '', ticketUpdateMailTemplate('status', ticketDetail?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                 }
                 if(req.body.assign){
                     const getAssignee = await ticketModel.findOne({_id: result?._id}).populate('AssignTo');
-                    if(getProject?.Customer != null)
+                    if(getProject?.Customer != null && process.env.ENVIRONMENT != 'DEV')
                         sendEmail(getProject?.Customer?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
-                    if(getProject?.Manager != null)
+                    if(getProject?.Manager != null && process.env.ENVIRONMENT != 'DEV')
                         sendEmail(getProject?.Manager?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
-                    if(getAssignee?.AssignTo != null)
+                    if(getAssignee?.AssignTo != null && process.env.ENVIRONMENT != 'DEV')
                         sendEmail(getAssignee?.AssignTo?.Email , `Ticket Update: Assigned to: ${getAssignee?.AssignTo?.Name}`, '', ticketUpdateMailTemplate('assign', getAssignee?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                 }
                 if(req.body.estimate){
-                    if(getProject?.Customer != null)
+                    if(getProject?.Customer != null && process.env.ENVIRONMENT != 'DEV')
                         sendEmail(getProject?.Customer?.Email , `Ticket Update: ETA for: ${result?.TicketNumber}` , '', ticketUpdateMailTemplate('eta', ticketDetail?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
-                    if(getProject?.Manager != null)
+                    if(getProject?.Manager != null && process.env.ENVIRONMENT != 'DEV')
                         sendEmail(getProject?.Manager?.Email , `Ticket Update: ETA for: ${result?.TicketNumber}` , '', ticketUpdateMailTemplate('eta', ticketDetail?.AssignTo?.Name, getProject?.Manager?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                 }
                 if(req.body.status && req.body.status == 'Solved'){
-                    if(getProject?.Customer != null)
+                    if(getProject?.Customer != null && process.env.ENVIRONMENT != 'DEV')
                         sendEmail(getProject?.Customer?.Email , `Ticket Closure: Action Required` , '', ticketUpdateMailTemplate('status', ticketDetail?.AssignTo?.Name, getProject?.Customer?.Name, result?.TicketNumber, moment(result?.EstimateDateTime).tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss'), result?.Status))
                 }
                 return res.status(200).json({status: 200, message: 'Record updated'});

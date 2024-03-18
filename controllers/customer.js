@@ -188,7 +188,8 @@ const customerController = {
       const result = await new customerModel(body).save();
       const projectUpdate = await projectModel.findOneAndUpdate({_id: req.body.project}, {Customer: result?._id}, {new: true}).exec();
       if(result?._id){
-        sendEmail(result?.Email, 'Welcome to Q-Ticket', '', customerOnboardMailTemplate(result?.Name, result?.Email, result?.Email, decodedPassword, projectUpdate?.Name))
+        if(process.env.ENVIRONMENT != 'DEV')
+          sendEmail(result?.Email, 'Welcome to Q-Ticket', '', customerOnboardMailTemplate(result?.Name, result?.Email, result?.Email, decodedPassword, projectUpdate?.Name))
         return res.status(200).json({ status: 200, message: "Customer Inserted", data: result });
       }else
         return res.status(200).json({staus: 400, message: 'Customer Insertion failed'});

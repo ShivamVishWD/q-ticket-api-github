@@ -170,7 +170,7 @@ async function handleAEDtrigger(projectname, modalname) {
                         }
                     }
                     empTd3.innerHTML = ` <div class="form-group-emp-select">
-                    <input type="checkbox" id=${response.data[i].Name} value="${response.data[i]._id}" data-project="${projectname}" onChange=empAssignListHandler(event,"${projectname}")>
+                    <input type="checkbox" id=${response.data[i].Name} value="${response.data[i]._id}" data-project="${projectname}" class="form-control" onChange=empAssignListHandler(event,"${projectname}")>
                     <label for=${response.data[i].Name}>Assign</label>
                   </div>`;
 
@@ -179,7 +179,7 @@ async function handleAEDtrigger(projectname, modalname) {
                             if (response.data[i].Project[j].Name == projectname) {
                                 console.log(response.data[i].Project[j].Name,'prohjectNAme')
                                 empTd3.innerHTML = ` <div class="form-group-emp-select">
-                    <input type="checkbox" id=${response.data[i].Name} value="${response.data[i]._id}" data-project="${projectname}" checked onChange=empAssignListHandler(event,"${projectname}")>
+                    <input type="checkbox" id=${response.data[i].Name} value="${response.data[i]._id}" data-project="${projectname}" class="form-control" checked onChange=empAssignListHandler(event,"${projectname}")>
                     <label for=${response.data[i].Name}>Assign</label>
                   </div>`;
                   assign_selected_empl.members.push(response.data[i]._id)
