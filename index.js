@@ -3,8 +3,7 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv').config();
 require('./config/mongodb');
 const authRouter = require('./routes/auth');
 

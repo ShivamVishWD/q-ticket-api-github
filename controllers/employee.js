@@ -29,15 +29,27 @@ const employeeController = {
                     filterObj[collectionFields[key]]= req.query[key]
             }
 
-            if('count' in req.query){
-                const count = await employeeModel.find({ IsActive: true, IsDeleted: false }).countDocuments();
-                return res.status(200).json({status: 200, message: 'Total Customer', count})
-            }
-
             filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
             
             const result = await employeeModel.find(filterObj).populate('Project').populate('CreatedBy').populate('LastModifiedBy').select('-Password');
             return res.status(200).json({status: 200, message: 'Records Fetched',  data: result});
+        }catch(error){
+            return HandleError(error);
+        }
+    },
+
+    count: async(req, res) => {
+        try{
+            let filterObj = {}
+            if(req.query && Object.keys(req.query).length > 0){
+                for(let key in req.query)
+                    filterObj[collectionFields[key]]= req.query[key]
+            }
+
+            filterObj = { ...filterObj, IsActive: true, IsDeleted: false }
+            
+            const count = await employeeModel.find(filterObj).countDocuments();
+            return res.status(200).json({status: 200, message: 'Total Employees',  count: count});
         }catch(error){
             return HandleError(error);
         }

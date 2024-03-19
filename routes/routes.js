@@ -1,5 +1,4 @@
 const express = require('express');
-const upload = require('../middleware/fileuploader');
 const router = express.Router();
 
 router.use('/project', require('./project.routes'));
@@ -11,7 +10,6 @@ router.use('/ticket', require('./ticket.routes'));
 router.use('/admin', require('./admin.routes'));
 
 router.use('/employee', require('./employee.routes'));
-
 
 router.use('/',require('./pages.routes'))
 

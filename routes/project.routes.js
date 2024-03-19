@@ -3,6 +3,7 @@ const projectController = require('../controllers/project');
 const token = require('../middleware/JWT');
 
 router.get('/get', token.verifyToken, projectController.get);
+router.get('/count', token.verifyToken, projectController.count);
 router.post('/insert', token.verifyToken, projectController.insert);
 router.patch('/update', token.verifyToken, projectController.update);
 router.delete('/delete/:id', token.verifyToken, projectController.delete);

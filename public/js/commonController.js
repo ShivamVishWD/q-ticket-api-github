@@ -1,7 +1,7 @@
 async function getCounts(){
     // Get Total no. of Projects
     try{
-        const apiUrl = url + 'api/project/get?count';
+        const apiUrl = url + 'api/project/count';
         let response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -19,7 +19,7 @@ async function getCounts(){
 
     // Get Total no. of Customers
     try{
-        const apiUrl = url + 'api/customer/get?count';
+        const apiUrl = url + 'api/customer/count';
         let response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -37,7 +37,7 @@ async function getCounts(){
 
     // Get Total no. of Tickets
     try{
-        const apiUrl = url + 'api/ticket/get?count';
+        const apiUrl = url + 'api/ticket/count';
         let response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -55,7 +55,7 @@ async function getCounts(){
 
     // Get Total no. of Teams
     try{
-        const apiUrl = url + 'api/employee/get?count';
+        const apiUrl = url + 'api/employee/count';
         let response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
