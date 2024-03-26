@@ -11,6 +11,8 @@ router.use('/admin', require('./admin.routes'));
 
 router.use('/employee', require('./employee.routes'));
 
+router.use('/reports', require('./reports.routes'));
+
 router.use('/',require('./pages.routes'))
 
 module.exports = router;
