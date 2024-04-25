@@ -107,7 +107,7 @@ const schema = new Schema({
         type: String,
         required: true,
         enum: ['New', 'Open', 'Ready To Dev', 'Assign To Dev', 'Dev Start', 'Dev Done', 'In QA', 'QA Done', 'Solved', 'Closed', 'Reopen'],
-        default: 'New'
+        default: 'Open'
     },
     CreatedBy: {
         type: Object,

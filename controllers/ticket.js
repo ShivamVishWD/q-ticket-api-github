@@ -55,6 +55,8 @@ const ticketController = {
                 baseUrl = 'http://' + req.headers.host + '/';
             }
             
+            baseUrl = 'https://adminqticket.quadrafort.com/'
+
             return res.status(200).json({status: 200, message: 'Records Fetched', baseUrl, data: result});
         }catch(error){
             console.log('error : ',error)
@@ -196,14 +198,15 @@ const ticketController = {
 
             if(req?.body?.status == 'Closed'){
                 updateObj[collectionFields['closeTime']] = new Date()
-                let totalDaysArr = Array(ticketDetail?.Logs).map(item => { return item?.LogTime }) || [];
-                updateObj[collectionFields['actual']] = calculateTotalDays(totalDaysArr);
+                let totalDaysArr = ticketDetail?.Logs.length > 0 && Array(ticketDetail?.Logs).map(item => { return item?.LogTime }) || [];
+                updateObj[collectionFields['actual']] = totalDaysArr.length > 0 ? calculateTotalDays(totalDaysArr) : "No Time";
             }
 
             if(req?.body?.status == 'Reopen')
                 updateObj[collectionFields['reopenTime']] = new Date()
 
             updateObj[collectionFields['updateby']] = updatedBy;
+
             const result = await ticketModel.findOneAndUpdate(filterObj,updateObj,{new: true}).exec();
             if(result?._id){
                 if(req.body.status && req.body.status != 'Solved'){
@@ -285,7 +288,6 @@ const ticketController = {
             const getTicketDetail = await ticketModel.findOne(filterObj);
 
             let totalDaysArr = getTicketDetail?.Logs.map(item => { return item?.LogTime }) || [];
-            console.log(totalDaysArr, 'totl day arr')
             let newLog = String(req?.body?.logtime).split(' ');
             totalDaysArr = [ ...totalDaysArr, ...newLog ];
             let actualDateTime = calculateTotalDays(totalDaysArr) || null;
@@ -352,40 +354,32 @@ const ticketController = {
 }
 
 function calculateTotalDays(timeStrings) {
+    console.log(timeStrings, 'time string')
+    let totalHours = 0;
     let totalMinutes = 0;
 
-    // Define conversion factors
-    const conversionFactors = {
-        'w': 7 * 24 * 60, // 1 week = 7 days * 24 hours * 60 minutes
-        'd': 24 * 60,      // 1 day = 24 hours * 60 minutes
-        'h': 60,           // 1 hour = 60 minutes
-        'm': 1             // 1 minute
-    };
-
-    // Loop through each time string and sum up the total minutes
+    // Loop through each time string and sum up the total hours and minutes
     timeStrings.forEach(timeString => {
-        const value = parseInt(timeString);
-        const unit = timeString.charAt(timeString.length - 1);
+        const segments = timeString.split(' ');
+        segments.forEach(segment => {
+            const value = parseInt(segment);
+            const unit = segment.slice(-1);
 
-        if (!isNaN(value) && unit in conversionFactors) {
-            totalMinutes += value * conversionFactors[unit];
-        }
+            if (!isNaN(value)) {
+                if (unit === 'h') {
+                    totalHours += value;
+                } else if (unit === 'm') {
+                    totalMinutes += value;
+                }
+            }
+        });
     });
 
-    // Convert total minutes back to weeks, days, hours, and minutes
-    const weeks = Math.floor(totalMinutes / (7 * 24 * 60));
-    const days = Math.floor((totalMinutes % (7 * 24 * 60)) / (24 * 60));
-    const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
-    const minutes = totalMinutes % 60;
+    // Adjust total minutes if it exceeds 60
+    totalHours += Math.floor(totalMinutes / 60);
+    totalMinutes = totalMinutes % 60;
 
-    // Construct the result string
-    const result = [];
-    if (weeks > 0) result.push(`${weeks}w`);
-    if (days > 0) result.push(`${days}d`);
-    if (hours > 0) result.push(`${hours}h`);
-    if (minutes > 0) result.push(`${minutes}m`);
-
-    return result.join(' ');
+    return `${totalHours}h ${totalMinutes}m`;
 }
 
 module.exports = ticketController;

@@ -3,7 +3,7 @@ function customerOnboardMailTemplate(name, email, userid, password, projectName)
     <b>Hi ${name},</b>
     <br/>
     <p>We're glad to onboard you on <b>Q-Ticket by Quadrafort</b>, where you can create and view your tickets regarding to <b>${projectName}</b></p>
-    <p>You can access the portal by clicking the following link :<br/><a href="https://quadrafort-ticket-frontend.vercel.app/login">https://quadrafort-ticket-frontend.vercel.app/login</a></p>
+    <p>You can access the portal by clicking the following link :<br/><a href="https://qticket.quadrafort.com/login">https://qticket.quadrafort.com/login</a></p>
     <p>For you benefit we've created a login credential and you can access the portal by below credential :</p>
     <b>User ID : ${userid || email}</b>
     <br/>
@@ -21,7 +21,7 @@ function teamMemberOnboardMailTamplate(name, email, userid, password){
     <b>Hi ${name},</b>
     <br/>
     <p>We're glad to onboard you on <b>Q-Ticket by Quadrafort</b>, where you can view and log your tickets regarding to tickets.</p>
-    <p>You can access the portal by clicking the following link :<br/><a href="https://q-ticket-api-github.onrender.com/">https://q-ticket-api-github.onrender.com/</a></p>
+    <p>You can access the portal by clicking the following link :<br/><a href="https://adminqticket.quadrafort.com/">https://adminqticket.quadrafort.com/</a></p>
     <p>For you benefit we've created a login credential and you can access the portal by below credential :</p>
     <b>User ID : ${userid || email}</b>
     <br/>
@@ -46,7 +46,7 @@ function ticketCreationMailTemplate(requestName, projectName, ticketNo, updateDa
             <td style="padding: 20px 0;">
                 <p>Hi ${requestName},</p>
                 <p>Thank you for reaching out.</p>
-                <p>A new ticket has been created in the Q-Ticket System for project: <strong>${projectName}</strong>. Our team is currently working on assigning it to an available developer. You will receive further updates via email.</p>
+                <p>A new ticket has been created in the Q-Ticket System for project: <strong>${projectName}</strong>. Our team is currently working on assigning it to an available team member. You will receive further updates via email.</p>
                 <p><strong>Ticket ID:</strong> ${ticketNo} | <strong>Date:</strong> ${updateDate}</p>
                 <p>If you have any further questions or concerns, please let us know.</p>
                 <p>Thanks,</p>
@@ -68,7 +68,7 @@ function ticketUpdateMailTemplate(updateType, assignToName, customerName, ticket
             <tr>
                 <td style="padding: 20px 0;">
                     <p>Hi ${customerName},</p>
-                    <p>Ticket No: ${ticketNo} has been updated and assigned to developer: ${assignToName}. The estimated time of arrival (ETA) will be updated shortly.</p>
+                    <p>Ticket No: ${ticketNo} has been updated and assigned to team member: ${assignToName}. The estimated turn around time (TAT) will be updated shortly.</p>
                     <p>Thanks,</p>
                     <p>Q-Ticket by Quadrafort</p>
                 </td>
@@ -80,13 +80,13 @@ function ticketUpdateMailTemplate(updateType, assignToName, customerName, ticket
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="720">
             <tr>
                 <td style="padding: 20px 0; text-align: center;">
-                    <h3 style="margin: 0;">Ticket ETA has been Updated</h3>
+                    <h3 style="margin: 0;">Ticket turn around time (TAT) has been Updated</h3>
                 </td>
             </tr>
             <tr>
                 <td style="padding: 20px 0;">
                     <p>Hi ${customerName},</p>
-                    <p>Ticket No: ${ticketNo} has been updated, and the estimated time of arrival (ETA) is ${estimateDate}.</p>
+                    <p>Ticket No: ${ticketNo} has been updated, and the estimated turn around time (TAT) is ${estimateDate}.</p>
                     <p>Thanks,</p>
                     <p>Q-Ticket by Quadrafort</p>
                 </td>

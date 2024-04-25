@@ -87,7 +87,7 @@ const customerController = {
         });
 
       const result = await customerModel
-        .findOne({ Email: req.body.email })
+        .findOne({ Email: String(req.body.email).toLowerCase() })
         .populate("Project");
       if (result != null) {
         let valid = bcrypt.compareSync(req.body.password, result?.Password);
@@ -284,8 +284,7 @@ const customerController = {
           message: "Mandatory Fields Error",
           fields: mandatoryFields,
         });
-
-      const getData = await customerModel.findOne({ Email: req.body.email });
+      const getData = await customerModel.findOne({ Email: String(req.body.email).toLowerCase() });
       if (getData?._id)
         return res
           .status(200)
@@ -293,9 +292,8 @@ const customerController = {
       let decodedPassword = req.body.password;
       req.body.password = bcrypt.hashSync(req.body.password, 10);
       let body = {};
-      for (let key in req.body) {
-        body[collectionFields[key]] = req.body[key];
-      }
+      for (let key in req.body)
+        body[collectionFields[key]] = key == 'email' ? String(req.body[key]).toLowerCase() : req.body[key];
 
       body[collectionFields["createby"]] = req?.authData?._id;
       body[collectionFields["updateby"]] = req?.authData?._id;

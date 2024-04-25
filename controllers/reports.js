@@ -59,7 +59,7 @@ const reportController = {
         ...filterObj,
         IsActive: true,
         IsDeleted: false,
-        createdAt: { $gte: last7Days },
+        // createdAt: { $gte: last7Days },
       };
 
       const tickets = await ticketModel.find(filterObj);

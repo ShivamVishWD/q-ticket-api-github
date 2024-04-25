@@ -1,0 +1,24 @@
+# This is an example Starter pipeline configuration
+# Use a skeleton to build, test and deploy using manual and parallel steps
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+
+image: node:20.12.0
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: Qticket Backend Test
+            caches:
+              - node
+            script:
+              - npm install
+              - npm start
+        - step:
+            name:  Qticket Backend Production
+            script:
+              - npm install
+              - npm start .
+            caches:
+              - node

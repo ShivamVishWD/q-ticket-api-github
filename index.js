@@ -1,11 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
-const dotenv = require('dotenv').config();
 require('./config/mongodb');
 const authRouter = require('./routes/auth');
+
+const statusMonitor = require('express-status-monitor')();
+app.use(statusMonitor);
 
 const port = process.env.PORT || 5001;
 

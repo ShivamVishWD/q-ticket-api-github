@@ -77,7 +77,7 @@ const employeeController = {
             req.body.password = bcrypt.hashSync(req.body.password, 10);
             let body = {};
             for(let key in req.body)
-                body[collectionFields[key]] = req.body[key];
+                body[collectionFields[key]] = key == 'email' ? String(req.body[key]).toLowerCase() : req.body[key];
             
             body[collectionFields['createby']] = req?.authData?._id;
             body[collectionFields['updateby']] = req?.authData?._id;
@@ -116,7 +116,7 @@ const employeeController = {
                 fields: mandatoryFields,
             });
 
-            const result = await employeeModel.findOne({ Email: req.body.email }).populate('Project');
+            const result = await employeeModel.findOne({ Email: String(req.body.email).toLowerCase() }).populate('Project');
             if (result != null) {
                 let valid = bcrypt.compareSync(req.body.password, result?.Password);
                 if (valid){

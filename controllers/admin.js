@@ -42,14 +42,13 @@ const adminController = {
             if(mandatoryFields.length > 0)
                 return res.status(200).json({status: 400, message: 'Mandatory Fields Error', fieds: mandatoryFields});
 
-            const getData = await adminModel.findOne({Email: req.body.email});
+            const getData = await adminModel.findOne({Email: String(req.body.email).toLowerCase()});
             if(getData?._id) return res.status(200).json({status: 400, message: 'This Email is already used'});
 
             req.body.password = bcrypt.hashSync(req.body.password, 10);
             let body = {};
-            for(let key in req.body){
-                body[collectionFields[key]] = req.body[key];
-            }
+            for(let key in req.body)
+                body[collectionFields[key]] = key == 'email' ? String(req.body[key]).toLowerCase() : req.body[key];
 
             const result = await new adminModel(body).save();
             if(result?._id)
@@ -81,7 +80,7 @@ const adminController = {
                 fields: mandatoryFields,
             });
 
-            const result = await adminModel.findOne({ Email: req.body.email, IsActive: true, IsDeleted: false });
+            const result = await adminModel.findOne({ Email: String(req.body.email).toLowerCase(), IsActive: true, IsDeleted: false });
             if (result != null) {
                 let valid = bcrypt.compareSync(req.body.password, result?.Password);
                 if (valid){
