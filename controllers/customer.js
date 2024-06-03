@@ -307,6 +307,7 @@ const customerController = {
         .exec();
       if (result?._id) {
         if (process.env.ENVIRONMENT != "DEV")
+        /*
           sendEmail(
             result?.Email,
             "Welcome to Q-Ticket",
@@ -319,6 +320,7 @@ const customerController = {
               projectUpdate?.Name
             )
           );
+        */
         return res
           .status(200)
           .json({ status: 200, message: "Customer Inserted", data: result });
