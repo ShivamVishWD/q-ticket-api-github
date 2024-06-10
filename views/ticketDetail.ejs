@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link href="/scss/global.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" type="text/css"/>
+    <title>
+        <%= pagetitle %>
+    </title>
+</head>
+<body>
+    <div class="container-fluid admin_dashboard">
+        <%- include('partials/sidebar.ejs') %>
+        <div class="dashboard_view container-fluid">
+            <%- include('partials/topbar.ejs') %>
+            <br/>
+            <h5 id="ticket-subject">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h5>
+            <hr/>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6 id="ticket-description">Ticket Description</h6>
+                        <div id="ticket_attachments"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-bordered ticket-datatable">
+                            <tr>
+                                <td colspan="2">
+                                    <button class="btn btn-sm btn-primary" id="time-log-btn">Log Time <i class="fa-solid fa-clock"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Status</h6>
+                                </td>
+                                <td>
+                                    <label id="ticket-status"></label> &nbsp;
+                                    <button class="btn btn-sm btn-primary" id="status-update"><i class="fa-solid fa-pen-to-square"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Created By</h6>
+                                </td>
+                                <td>
+                                    <label id="created-by"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Created At</h6>
+                                </td>
+                                <td>
+                                    <label id="created-at"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Ticket Type</h6>
+                                </td>
+                                <td>
+                                    <label id="ticket-type"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Assign To</h6>
+                                </td>
+                                <td>
+                                    <label id="assign-to"></label> &nbsp;
+                                    <button class="btn btn-sm btn-primary" id="update-assignee"><i class="fa-solid fa-pen-to-square"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Priority</h6>
+                                </td>
+                                <td>
+                                    <label id="ticket-priority"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Updated At</h6>
+                                </td>
+                                <td>
+                                    <label id="updated-at"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Estimate Time</h6>
+                                </td>
+                                <td>
+                                    <label id="estimate-time"></label> &nbsp;
+                                    <button class="btn btn-sm btn-primary" id="estimate-update-modal-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Actual Time</h6>
+                                </td>
+                                <td>
+                                    <label id="actual-time"></label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <hr/>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ticket_comment_sec">
+                            <div class="commetns_header">
+                                <h6>Activity</h6>
+                            </div>
+                            <div class="comment_sec_body">
+                                <div class="add_comment_box">
+                                    <div class="comment_container">
+                                        <div class="input_container" id="input_container_id">
+                                            <textarea class="form-control" rows="5" id="comment_imput_value" placeholder="Write a Comment" onfocus="handleInputBox();"></textarea>
+                                        </div>
+                                        <br/>
+                                        <div class="comment_action_box" id="comment_action_box">
+                                            <button type="button" class="btn btn-primary theme-btn" onclick="saveComment();">Save</button>
+                                            <button type="button" class="btn btn-secondary" id="comment_close_btn">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                                <div id="user_coments_boxx"></div>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Assignee Modal -->
+    <div class="modal fade" id="assign_employee_modal" tabindex="-1" aria-labelledby="exampleModalLabel_assign_employee" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" id="update_assignee">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel_assign_employee">Update Assignee</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_assign_modal"></button>
+            </div>
+            <div class="modal-body">
+                <select name="Select Assignee" id="update_assigneee" value="select" class="form-select">
+                
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_assign_modal_btn">Close</button>
+                <button type="button" class="btn btn-primary theme-btn" onclick="updateAssignee();">Save changes</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Estimate Date Time -->
+    <div class="modal fade" id="update_Time_employee_modal" tabindex="-1" aria-labelledby="exampleModalLabel_Time_employee" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" id="update_time">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel_Time_employee">Update Time</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_time_modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="datetime-local" id="update_estime_time_val" name="update_estime_time_val" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_time_modal_btn">Close</button>
+                    <button type="button" class="btn btn-primary theme-btn" onclick="updateTime();">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Ticket Status Modal -->
+    <div class="modal fade" id="update_statuss_modal" tabindex="-1" aria-labelledby="exampleModalLabel_status_modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" id="update_status">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel_status_modal">Update Status</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_update_status_modal"></button>
+                </div>
+                <div class="modal-body">
+                    <select class="form-select" aria-label="status update" id="user_update_status">
+                        <option value="Open">Open</option>
+                        <option value="Ready To Dev">Ready To Dev</option>
+                        <option value="Dev Start">Dev Start</option>
+                        <option value="Dev Done">Dev Done</option>
+                        <option value="In QA">In QA</option>
+                        <option value="QA Done">QA Done</option>
+                        <option value="Solved">Solved</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Reopen">Reopen</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_update_status_modal_btn">Close</button>
+                    <button type="button" class="btn btn-primary theme-btn" onclick="updateStatus();">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Time Log -->
+    <div class="modal fade" id="time_log_modal" tabindex="-1" aria-labelledby="exampleModalLabel_time_log" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" id="update_status">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel_time_log">Log Time</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_time_log_modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="time_track_input">
+                        <label for="input_time_track_value">Log time</label>
+                        <input type="text" placeholder="Enter time here" class="form-control" id="input_time_track_value">
+                    </div>
+                    <div class="time_log_format">
+                        <p>Use the format: 2w 4d 6h 45m</p>
+                        <ul>
+                            <li>w = weeks</li>
+                            <li>d = days</li>
+                            <li>h = hours</li>
+                            <li>m = minutes</li>
+                        </ul>
+                    </div>
+                    <div class="time_log_des">
+                        <label for="time_log_work_description" class="form-label">Work Description</label>
+                        <textarea class="form-control" id="time_log_work_description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_time_log_modal_btn">Close</button>
+                    <button type="button" class="btn btn-primary theme-btn" onclick="updateLogTime();">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" type="text/javascript"></script>
+    <script src="/js/ckEditor.js" type="text/javascript"></script>
+    <script src="/js/ckFinder.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        const Base_url = "<%= url %>";
+        const token = "<%= usertoken %>";
+        const userid = "<%= userid %>";
+        const profile = "<%= profile %>";
+        const username= '<%= username %>'
+        const ticketNo = '<%= ticketNo %>';
+    </script>
+    <script src="/js/validation.js"></script>
+    <script src="/js/ticketController.js"></script>
+</body>
+</html>

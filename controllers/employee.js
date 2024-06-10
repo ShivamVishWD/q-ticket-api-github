@@ -11,6 +11,7 @@ const collectionFields = {
     password: 'Password',
     project: "Project",
     role: 'Role',
+    profile: 'Profile',
     active: "IsActive",
     delete: "IsDeleted",
     permission: "Permission",

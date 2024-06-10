@@ -58,6 +58,15 @@ router.get('/tickets', async(req, res) => {
         res.render('ticket', {url: baseUrl, usertoken: req.session?.userotken, pagename: 'tickets', pagetitle: 'Q-Ticket | Tickets', userid: req.session?.userid, profile: req.session?.profile, username: req.session?.username})
 })
 
+router.get('/ticket/:ticketNo', async(req, res) => {
+    // const baseUrl = req.protocol + '://' + req.headers.host + '/';
+    const baseUrl = '/';
+    if(req.session.userotken == null)
+        res.redirect('/')
+    else if(req.params && req.params.ticketNo)
+        res.render('ticketDetail', {url: baseUrl, usertoken: req.session?.userotken, pagename: 'tickets', pagetitle: 'Q-Ticket | Ticket | '+req?.params?.ticketNo, ticketNo: req?.params?.ticketNo, userid: req.session?.userid, profile: req.session?.profile, username: req.session?.username})
+})
+
 router.get('/admin/logout', async(req, res) => {
     // const baseUrl = req.protocol + '://' + req.headers.host + '/';
     const baseUrl = '/';

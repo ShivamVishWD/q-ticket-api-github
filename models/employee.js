@@ -48,6 +48,11 @@ const schema = new Schema({
         enum: ['Team Member', 'Manager'],
         default: null
     },
+    Profile: {
+        type: String,
+        required: false,
+        default: "Team Member"
+    },
     Permission: {
         type: Array,
         required: false,

@@ -334,6 +334,13 @@
   transform: rotate(45deg);
 }
 
+.ticket-datatable {
+  width: 100%;
+}
+.ticket-datatable tr td {
+  height: 40px;
+}
+
 .ticket_des_modal {
   min-height: 100vh;
 }
